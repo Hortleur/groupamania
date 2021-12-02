@@ -1,10 +1,13 @@
 <template>
-    <button @click="onClick" class="btn"><i class="fas fa-user-plus"></i></button>
+    <button @click="onClick" class="btn"><i :class="['fas', icon]"></i></button>
 </template>
 
 <script>
 export default {
     name: 'Button',
+
+    props: ['icon']
+    ,
 
     methods:{
         onClick() {

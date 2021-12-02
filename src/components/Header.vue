@@ -2,9 +2,8 @@
     <header>
         <img src="../assets/logo_groupamania.webp" alt="Logo groupamania">
         <div class="">
-            <Button @btn-click="$emit('toggle-login-form')" />
-            <Button @btn-click="$emit('toggle-signup-form')"/>
-            
+            <Button @btn-click="$emit('toggle-signup-form')" icon="fa-user-plus"/>
+            <Button @btn-click="$emit('toggle-login-form')" icon="fa-user-minus" />
         </div>
       
     </header>
@@ -16,6 +15,9 @@ export default {
     name: 'Header',
     components: {
         Button
+
+    },
+    props: {
 
     },
     methods: {

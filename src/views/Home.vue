@@ -1,5 +1,5 @@
 <template>
-  <Header @toggle-signup-form="toggleSignupForm" @toogle-login-form="toogleLoginForm"/>
+  <Header @toggle-signup-form="toggleSignupForm" @toggle-login-form="toggleLoginForm"/>
   <div class="home">
     <div v-show="showSignupForm">
       <signup />
