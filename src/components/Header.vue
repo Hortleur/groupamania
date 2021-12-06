@@ -2,8 +2,9 @@
     <header>
         <img src="../assets/logo_groupamania.webp" alt="Logo groupamania">
         <div class="">
-            <Button @btn-click="$emit('toggle-signup-form')" icon="fa-user-plus"/>
-            <Button @btn-click="$emit('toggle-login-form')" icon="fa-user-minus" />
+            <Button  @btn-click="$emit('toggle-signup-form')" icon="fa-user-edit"/>
+            <Button  @btn-click="$emit('toggle-login-form')" icon="fa-user-check" />
+            <Button  icon="fa-user-astronaut" />
         </div>
       
     </header>

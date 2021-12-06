@@ -38,8 +38,8 @@ export default {
     }
 }
 .loginForm{
- border: 2px solid white;
- box-shadow: 0 0 4px 2px whitesmoke;
+ border: 2px solid black;
+ box-shadow: 0 0 4px 2px black;
 }
 .container{
     display: flex;

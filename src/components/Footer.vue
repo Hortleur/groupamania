@@ -16,7 +16,7 @@ export default {
         display: flex;
         flex-flow: row wrap;
         margin-top: 30px;
-        background-color: darkgrey;
+        background-color: darken(red, 30);
         justify-content: center;
         align-items: center;
         height: 200px;

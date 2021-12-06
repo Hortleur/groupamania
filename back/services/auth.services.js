@@ -52,6 +52,7 @@ exports.login = async (req, res) => {
         ...user,
         accessToken
     }
+    
 }
 
 exports.all = async (req, res) => {

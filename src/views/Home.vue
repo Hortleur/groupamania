@@ -36,12 +36,12 @@ export default {
   },
   methods: {
     toggleSignupForm(){
-      this.showSignupForm = !this.showSignupForm
+      this.showSignupForm = 
+      !this.showLoginForm && !this.showSignupForm  
     },
     toggleLoginForm(){
-      this.showLoginForm = !this.showLoginForm
-    }
-
+      this.showLoginForm =!this.showSignupForm && !this.showLoginForm  
+    },
   }
 }
 
@@ -50,6 +50,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+template{
+  display: flex;
+  flex-direction: column;
+  height: 100%
+}
 
 </style>
