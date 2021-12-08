@@ -5,7 +5,7 @@ const post = require('../controllers/post')
 const auth = require('../middleware/auth')
 
 //create
-router.post('/createPost', auth, post.createPost)
+router.post('/createPost', post.createPost)
 
 //read
 

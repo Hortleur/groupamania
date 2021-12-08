@@ -1,7 +1,6 @@
 <template>
     <footer>
-            <h2>Copyright:</h2>
-            <img src="../assets/logo_groupamania.webp" alt="logo groupamania">
+        <img src="../assets/logo_groupamania.webp" alt="logo groupamania">
     </footer>
 </template>
 
@@ -16,16 +15,15 @@ export default {
         display: flex;
         flex-flow: row wrap;
         margin-top: 30px;
-        background-color: darken(red, 30);
+        background-color: darken(#f52c09, 18);
         justify-content: center;
         align-items: center;
-        height: 200px;
+        height: 250px;
     }
     img{
         width: 200px;
         height: auto;
+        border-radius: 50%;
     }
-    h2{
-        margin-right: 20px;
-    }
+
 </style>

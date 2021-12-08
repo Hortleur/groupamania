@@ -7,7 +7,7 @@ exports.signup = async (req, res, next) => {
         try {
             const user = await auth.signup(req, res)
             console.log(user)
-            res.status(200).json({
+            res.status(201).json({
                 status: true,
                 message: 'Utilisateur créer',
                 data: user
@@ -46,7 +46,7 @@ exports.all = async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
     try {
         const user = await auth.deleteUser(req, res)
-        res.status(200).json({
+        res.status(201).json({
             status: true,
             message: "Compte bien supprimé",
             data: user

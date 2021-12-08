@@ -8,11 +8,15 @@
             <PostList />
         </Suspense>
     </div>
+    <div>
+        <Footer />
+    </div>
 </template>
 
 <script>
 import Header from "../components/Header.vue";
 import PostList from "../components/PostList.vue";
+import Footer from "../components/Footer.vue";
 import { ref, onErrorCaptured } from "vue";
 
 
@@ -29,6 +33,7 @@ export default {
     components: {
         Header,
         PostList,
+        Footer
     },
 }
 </script>

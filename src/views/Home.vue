@@ -1,19 +1,18 @@
 <template>
-  <Header @toggle-signup-form="toggleSignupForm" @toggle-login-form="toggleLoginForm"/>
-  <div class="home">
-    <div v-show="showSignupForm">
-      <signup />
-    </div>
-    <div v-show="showLoginForm">
-      <login />
-    </div>
+  <Header/>
+  <div>
+    <h1>
+      Bienvenue sur le réseau de Groupomania
+    </h1>
+  </div>
+  <div class="login">
+    <Login />
   </div>
   <Footer />
 </template>
 
 <script>
-import signup from '../components/Signup.vue'
-import login from '../components/Login.vue'
+import Login from '../components/Login.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 // @ is an alias to /src
@@ -22,26 +21,11 @@ import Footer from '../components/Footer.vue'
 export default {
   name: 'Home',
   components: {
-    signup,
-    login,
+    Login,
     Header,
     Footer
   },
-
-  data(){
-    return {
-      showSignupForm : false,
-      showLoginForm : false
-    }
-  },
   methods: {
-    toggleSignupForm(){
-      this.showSignupForm = 
-      !this.showLoginForm && !this.showSignupForm  
-    },
-    toggleLoginForm(){
-      this.showLoginForm =!this.showSignupForm && !this.showLoginForm  
-    },
   }
 }
 
@@ -50,10 +34,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-template{
-  display: flex;
-  flex-direction: column;
-  height: 100%
-}
-
+  h1{
+    font-size: 45px
+  }
+  .login{
+    margin: 13vh auto;
+    width : 50%;
+  }
 </style>

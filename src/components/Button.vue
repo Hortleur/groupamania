@@ -1,5 +1,5 @@
 <template>
-    <button @click="onClick" class="btn"><i :class="['fas', icon]"></i></button>
+    <button class="btn"><i :class="['fas', icon]"></i></button>
 </template>
 
 <script>
@@ -10,9 +10,7 @@ export default {
     ,
 
     methods:{
-        onClick() {
-            this.$emit('btn-click')
-        },
+
     }
 }
 </script>
@@ -20,7 +18,7 @@ export default {
 <style lang="scss" scoped>
       button{
           margin: 0 10px;
-          border-radius: 13px;
+          border-radius: 10px;
           &:hover{
               cursor: pointer;
           }

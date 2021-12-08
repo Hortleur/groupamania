@@ -131,7 +131,14 @@ exports.createPost = async (req, res) => {
 }
 
 exports.allPost = async(req, res) => {
-    const allPost = await prisma.post.findMany()
+    const allPost = await prisma.post.findMany({
+        include:{
+            Image: true,
+            user: true,
+            Commentaire: true,
+            Likes: true
+        }
+    })
     return  allPost
 }
 
@@ -140,6 +147,12 @@ exports.onePost = async(req, res) => {
     const onePost = await prisma.post.findUnique({
         where: {
             id: Number(id)
+        },
+        include:{
+            Image: true,
+            user: true,
+            Commentaire: true,
+            Likes: true
         }
     })
     return onePost

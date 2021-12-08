@@ -1,13 +1,12 @@
 <template>
     <div v-if="error">{{error}}</div>
-    <div v-else v-for="post in posts.data" :key="post.id">
-        <div class="post">
+    <div v-else v-for="post in posts.data" :key="post.id" class="posts">
             <div class="title">
                 <h2>{{post.title}}</h2>
             </div>
             <div class="content">
                 <div class="image">
-                    
+                    {{post.Image.imageUrl}}
                 </div>
                 <div class="texte">
                     {{post.content}}
@@ -15,10 +14,10 @@
             </div>
             <div class="postFooter">
                 <div class="userName">
-                    
+                    Posté par: {{post.user.name}}
                 </div>
                 <div class="likes">
-                    <i class="fas fa-heart"></i> 
+                    <i class="fas fa-heart">{{post.Likes.likeCount}}</i> 
                 </div>
             </div>
             <div class="comments">
@@ -29,7 +28,6 @@
                     
                 </div>
             </div>
-        </div>
     </div>
 </template>
 
@@ -62,5 +60,25 @@
 </script>
 
 <style lang="scss" scoped>
+    .posts{
+        border: 2px solid black;
+        width: 50%;
+        margin: 0 auto;
+        .title{
+            border: 1px solid black;
+        }
+        .content{
+            border: 1px solid black
+        }
+        .postFooter{
+            border: 2px solid black;
+            display: flex;
+            justify-content: center;
+            
+            div{
+                margin: 0 20px
+            }
 
+        }
+    }
 </style>

@@ -1,21 +1,15 @@
 <template>
     <header>
-        <img src="../assets/logo_groupamania.webp" alt="Logo groupamania">
-        <div class="">
-            <Button  @btn-click="$emit('toggle-signup-form')" icon="fa-user-edit"/>
-            <Button  @btn-click="$emit('toggle-login-form')" icon="fa-user-check" />
-            <Button  icon="fa-user-astronaut" />
-        </div>
-      
+        <img src="../assets/logo_groupamania.webp" alt="Logo groupamania"> 
     </header>
 </template>
 
 <script>
-import Button from './Button.vue'
+
 export default {
     name: 'Header',
     components: {
-        Button
+
 
     },
     props: {
