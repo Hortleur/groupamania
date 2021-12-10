@@ -13,9 +13,13 @@
         <div class="form-row">
             <input v-model="password" type="password" placeholder="Mot de passe" class="form-row__input">
         </div>
+        <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
+            Adresse mail ou mot de passe invalide
+        </div>
         <div class="form-row">
-            <button class="button button--disabled" v-if="mode == 'login'">
-                Connexion
+            <button @click="login()" class="button" v-if="mode == 'login'">
+                <span v-if="status == loading">Connexion en cours</span>
+                <span v-else>Connexion</span> 
             </button>
             <button @click="createAccount()" class="button" v-else>
                 S'inscrire
@@ -25,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 
 export default {
     name: 'Login',
@@ -37,7 +42,7 @@ export default {
         }
     },
     computed: {
-
+        ...mapState(['status'])
     },
     methods: {
        switchToCreate: function(){
@@ -46,11 +51,29 @@ export default {
        switchToLogin: function(){
            this.mode = 'login'
        },
+       login: function() {
+           const self = this
+           this.$store.dispatch('login', {
+               email: this.email,
+               password: this.password
+           }).then(function(data) {
+               localStorage.setItem('gpc', JSON.stringify(data.data.data))
+               self.$router.push('/Post')
+           }, function(error) {
+               console.log(error)
+           })
+       } ,
        createAccount: function(){
+           const self = this
            this.$store.dispatch('createAccount', {
                email: this.email,
                name: this.prenom,
                password: this.password
+           }).then(function(response) {
+               localStorage.setItem('gpc', JSON.stringify(response.data.data))
+               self.$router.push('/Post');
+           }, function(error) {
+               console.log(error)
            })
        }
     }

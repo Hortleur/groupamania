@@ -5,11 +5,11 @@ const post = require('../controllers/post')
 const auth = require('../middleware/auth')
 
 //create
-router.post('/createPost', post.createPost)
+router.post('/createPost', auth, post.createPost)
 
 //read
 
-router.get('/post', post.allPost)
+router.get('/post', auth, post.allPost)
 router.get('/post/:id', auth, post.onePost)
 
 router.delete('/post/delete/:id', auth, post.deletePost)

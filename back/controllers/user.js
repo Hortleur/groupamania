@@ -19,11 +19,11 @@ exports.signup = async (req, res, next) => {
 
     exports.login = async (req, res, next) => {
         try {
-            const data = await auth.login(req,res)
+            const userLog = await auth.login(req,res)
             res.status(200).json({
                 status: true,
                 message: "Connexion établie",
-                data
+                data: userLog
             })
         } catch (e) {
             next(createHttpError(e.statusCode, e.message))

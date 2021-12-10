@@ -10,7 +10,7 @@ const createHttpError = require('http-errors');
 
 // User
 exports.signup = async (req, res) => {
-    console.log(req.body)
+
     const hash = bcrypt.hashSync(req.body.password, 10)
     const {
         email,
@@ -47,12 +47,12 @@ exports.login = async (req, res) => {
     const checkPassword = bcrypt.compareSync(password, user.password)
     if (!checkPassword) throw createHttpError.Unauthorized('Email ou Mot de Passe invalide')
     delete user.password
-    const accessToken = jwt.signAccessToken(user)
+    const token = await jwt.signAccessToken(user)
     return {
         ...user,
-        accessToken
+        token
     }
-    
+
 }
 
 exports.all = async (req, res) => {
@@ -116,22 +116,26 @@ exports.editProfile = async (req, res) => {
 exports.createPost = async (req, res) => {
     const {
         title,
-        content
+        content,
+        userId
     } = req.body
     const post = await prisma.post.create({
         data:{
             title,
-            content
+            content,
+            user:{
+               connect: {id : userId}
+            } 
         },
-        include:{
-            user: true
-        }
     })
     return post
 }
 
 exports.allPost = async(req, res) => {
     const allPost = await prisma.post.findMany({
+        orderBy:{
+            createdAt: 'desc'
+        },
         include:{
             Image: true,
             user: true,
@@ -212,10 +216,12 @@ exports.deleteComment = async(req, res) => {
 //images
 
 exports.createImage = async(req, res) => {
-    const  imageUrl  = req.body
+    const  {imageUrl,
+    imageAltText}  = req.body
     const postImage = await prisma.image.create({
         data:{
-            imageUrl: imageUrl = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+            imageUrl: imageUrl = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`,
+            imageAltText
         },
         include:{
             post: true
@@ -236,10 +242,13 @@ exports.oneImage = async(req, res) => {
 
 exports.updateImage = async(req, res) => {
     const id = req.params
-    const imageUrl = req.body
+    const {imageUrl,
+           imageAltText         
+    } = req.body
     const postImage = await prisma.image.update({
         data :{
-            imageUrl: imageUrl = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+            imageUrl: imageUrl = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`,
+            imageAltText
         },
         where:{
             id: Number(id)

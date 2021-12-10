@@ -40,13 +40,16 @@
         },
         method: {
             
-        },
-        
+        },  
         async setup(){
             const posts = ref(null)
             const error = ref(null)
             try {
-                const postsResponse = await fetch('http://localhost:3000/api/auth/post')
+                const postsResponse = await fetch('http://localhost:3000/api/auth/post', {
+                    headers: {
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+                    }
+                })
             posts.value = await postsResponse.json()
             } catch (err) {
                 error.value = err

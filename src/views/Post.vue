@@ -2,6 +2,9 @@
     <div>
         <Header />  
     </div>
+    <div>
+        <PostForm />
+    </div>
     <div v-if="error">{{error}}</div>
     <div>
         <Suspense>
@@ -17,6 +20,7 @@
 import Header from "../components/Header.vue";
 import PostList from "../components/PostList.vue";
 import Footer from "../components/Footer.vue";
+import PostForm from "../components/PostForm.vue";
 import { ref, onErrorCaptured } from "vue";
 
 
@@ -33,7 +37,8 @@ export default {
     components: {
         Header,
         PostList,
-        Footer
+        Footer,
+        PostForm
     },
 }
 </script>
