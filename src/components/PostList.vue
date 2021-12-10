@@ -14,7 +14,7 @@
             </div>
             <div class="postFooter">
                 <div class="userName">
-                    Posté par: {{post.user.name}}
+                    <span>Posté par:</span>  {{post.user.name}}
                 </div>
                 <div class="likes">
                     <i class="fas fa-heart">{{post.Likes.likeCount}}</i> 
@@ -65,16 +65,20 @@
 <style lang="scss" scoped>
     .posts{
         border: 2px solid black;
-        width: 50%;
-        margin: 0 auto;
+        width: 100%;
+        margin: 40px auto;
+        border-radius: 15px;
         .title{
             border: 1px solid black;
+            border-radius: 15px;
         }
         .content{
-            border: 1px solid black
+            border: 1px solid black;
+            border-radius: 15px;
         }
         .postFooter{
             border: 2px solid black;
+            border-radius: 15px;
             display: flex;
             justify-content: center;
             

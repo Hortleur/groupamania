@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <Header />  
+    <div class="header">
+        <Header />
+        <button @click="goToProfile()"><i class="fas fa-user-astronaut"></i></button>
     </div>
     <div>
         <PostForm />
@@ -24,6 +25,7 @@ import PostForm from "../components/PostForm.vue";
 import { ref, onErrorCaptured } from "vue";
 
 
+
 export default {
     name: 'Post',
     setup(){
@@ -40,9 +42,18 @@ export default {
         Footer,
         PostForm
     },
+    methods:{
+        
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.header{
+    display: flex;
+    width: 100%;
+    height: 100px;
+    flex-flow: row nowrap;
+    margin-bottom: 40px ;
+}
 </style>

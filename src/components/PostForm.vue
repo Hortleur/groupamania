@@ -20,6 +20,7 @@
 let gpc = localStorage.getItem('gpc')
 const token = JSON.parse(gpc).token
 const UserId= JSON.parse(gpc).id
+console.log(UserId)
 const axios = require('axios');
 const instance = axios.create({
   baseURL: "http://localhost:3000/api/auth",
