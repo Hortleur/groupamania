@@ -6,7 +6,8 @@
             </div>
             <div class="content">
                 <div class="image">
-                    {{post.Image.imageUrl}}
+                    <img :src="post.image" :alt="post.imageAltText" loading="lazy">
+                    
                 </div>
                 <div class="texte">
                     {{post.content}}
@@ -54,7 +55,6 @@
             } catch (err) {
                 error.value = err
             }
-            
             return {posts, error}
         }
 

@@ -1,7 +1,9 @@
 <template>
     <div class="header">
         <Header />
-        <button @click="goToProfile()"><i class="fas fa-user-astronaut"></i></button>
+        <button>
+            <i class="fas fa-user-astronaut"></i>
+        </button>   
     </div>
     <div>
         <PostForm />
@@ -43,7 +45,7 @@ export default {
         PostForm
     },
     methods:{
-        
+
     }
 }
 </script>

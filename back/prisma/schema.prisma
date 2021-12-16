@@ -16,9 +16,10 @@ model Post {
   updatedAt   DateTime      @updatedAt
   title       String        @db.VarChar(255)
   content     String?
+  image       String?
+  imageAltText  String?
   user        User          @relation(fields: [userId], references: [id])
   userId    Int
-  Image       Image[]
   Commentaire Commentaire[]
   Likes       Likes[]
 }
@@ -43,13 +44,6 @@ model User {
   isAdmin     Int           @default(0)
 }
 
-model Image {
-  id       Int    @id @default(autoincrement())
-  imageUrl String
-  imageAltText String
-  post     Post   @relation(fields: [postId], references: [id])
-  postId   Int
-}
 
 model Commentaire {
   id      Int    @id @default(autoincrement())

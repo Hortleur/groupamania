@@ -3,9 +3,10 @@ const router = express.Router()
 
 const post = require('../controllers/post')
 const auth = require('../middleware/auth')
+const multer = require('../middleware/multer-config')
 
 //create
-router.post('/createPost', auth, post.createPost)
+router.post('/createPost', auth, multer, post.createPost)
 
 //read
 

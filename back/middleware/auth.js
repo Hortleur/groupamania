@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
         req.user = user
         next()
     }).catch (e => {
-        next(createError.Unauthorized(e.message))
+        next( createError.Unauthorized(e.message))
     })
 }
 module.exports = auth;

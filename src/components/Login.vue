@@ -61,6 +61,7 @@ export default {
                self.$router.push('/Post')
            }, function(error) {
                console.log(error)
+               alert("Veuillez créer un compte")
            })
        } ,
        createAccount: function(){
@@ -74,6 +75,7 @@ export default {
                self.$router.push('/Post');
            }, function(error) {
                console.log(error)
+               alert('Compte déjà existant')
            })
        }
     }

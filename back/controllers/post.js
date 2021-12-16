@@ -1,5 +1,6 @@
 const auth = require('../services/auth.services')
 const createHttpError = require('http-errors')
+const fs = require('fs')
 
 exports.createPost = async(req, res, next) => {
     try {
@@ -43,10 +44,13 @@ exports.onePost = async(req, res, next) => {
 exports.deletePost = async(req, res, next) => {
     try {
         const post = await auth.deletePost(req, res)
-        res.status(200).json({
-            status : true,
-            message: 'Post bien supprimer',
-            data: post
+        const filename = image.imageUrl.split('/image/')[1]
+        fs.unlink(`image/${filename}`, () => {
+            res.status(200).json({
+                status : true,
+                message: 'Post bien supprimer',
+                data: post
+            })
         })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message)) 

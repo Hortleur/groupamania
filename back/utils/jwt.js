@@ -5,7 +5,7 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
 module.exports = {
     signAccessToken(payload){
         return new Promise((resolve, reject) => {
-            jwt.sign({ payload }, accessTokenSecret, {expiresIn:'24h'}, (err, token) => {
+            jwt.sign({ payload }, accessTokenSecret, (err, token) => {
                 if (err) {
                 reject(createError.InternalServerError())
                 }

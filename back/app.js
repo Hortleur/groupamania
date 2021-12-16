@@ -13,7 +13,6 @@ const userRoutes = require('./routes/user')
 const profileRoutes = require('./routes/profile')
 const postRoutes = require('./routes/post')
 const commentRoutes = require('./routes/comment')
-const imageRoutes = require('./routes/image')
 
 
 app.use((req, res, next) => {
@@ -28,6 +27,6 @@ app.use('/api/auth/', userRoutes);
 app.use('/api/auth/', profileRoutes);
 app.use('/api/auth/', postRoutes);
 app.use('/api/auth/', commentRoutes);
-app.use('/api/auth/', imageRoutes);
+app.use('/image', express.static(path.join(__dirname, 'image')));
 
 module.exports = app;

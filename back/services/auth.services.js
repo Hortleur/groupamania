@@ -117,12 +117,16 @@ exports.createPost = async (req, res) => {
     const {
         title,
         content,
+        imageAltText,
         userId
-    } = req.body
+    } = JSON.parse(req.body.formContent)
+    const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
     const post = await prisma.post.create({
         data:{
             title,
             content,
+            image,
+            imageAltText,
             user:{
                connect: {id : userId}
             } 
@@ -137,7 +141,6 @@ exports.allPost = async(req, res) => {
             createdAt: 'desc'
         },
         include:{
-            Image: true,
             user: true,
             Commentaire: true,
             Likes: true
@@ -153,7 +156,6 @@ exports.onePost = async(req, res) => {
             id: Number(id)
         },
         include:{
-            Image: true,
             user: true,
             Commentaire: true,
             Likes: true
@@ -211,58 +213,4 @@ exports.deleteComment = async(req, res) => {
         }
     })
     return commentaire
-}
-
-//images
-
-exports.createImage = async(req, res) => {
-    const  {imageUrl,
-    imageAltText}  = req.body
-    const postImage = await prisma.image.create({
-        data:{
-            imageUrl: imageUrl = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`,
-            imageAltText
-        },
-        include:{
-            post: true
-        }
-    })
-    return postImage
-}
-
-exports.oneImage = async(req, res) => {
-    const id = req.params
-    const postImage = await prisma.image.findUnique({
-        where:{
-            id: Number(id)
-        }
-    })
-    return postImage
-}
-
-exports.updateImage = async(req, res) => {
-    const id = req.params
-    const {imageUrl,
-           imageAltText         
-    } = req.body
-    const postImage = await prisma.image.update({
-        data :{
-            imageUrl: imageUrl = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`,
-            imageAltText
-        },
-        where:{
-            id: Number(id)
-        }
-    })
-    return postImage
-}
-
-exports.deleteImage = async(req, res) => {
-    const id = req.params
-    const postImage = await prisma.image.delete({
-        where:{
-            id: Number(id)
-        }
-    })
-    return postImage
 }

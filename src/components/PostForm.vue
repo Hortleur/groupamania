@@ -20,12 +20,7 @@
 let gpc = localStorage.getItem('gpc')
 const token = JSON.parse(gpc).token
 const UserId= JSON.parse(gpc).id
-console.log(UserId)
-const axios = require('axios');
-const instance = axios.create({
-  baseURL: "http://localhost:3000/api/auth",
-  headers: {"Authorization": `Bearer ${token}`}, 
-})
+const axios = require('axios')
 
 export default {
     name:'PostForm',
@@ -40,23 +35,28 @@ export default {
     },
     methods:{
         onFileSelected(event){
-           this.selectedfile = event.target.files[0]
+           this.selectedFile = event.target.files[0]
         },
         onPost(){
-            instance.post('/createPost',{
+            const instance = axios.create({
+                baseURL: "http://localhost:3000/api/auth",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "multipart/form-data"
+            }, 
+            })
+            let fd = new FormData();
+            fd.append('image',this.selectedFile)
+            
+            const formContent = {
                 title: this.title,
                 content: this.content,
-                userId: this.userId
-            })
-            .then(res => {
-                console.log(res)
-            })
-            const fd = new FormData();
-            fd.append('image', this.selectedFile, this.selectedFile.name)
-            instance.post('/createImage',{
-                imageUrl: this.fd,
-                imageAltText: this.imageAltText
-            })
+                image: this.selectedFile,
+                imageAltText: this.imageAltText,
+                userId: this.userId,
+            }
+            fd.append('formContent', JSON.stringify(formContent))
+            instance.post('/createPost', fd)
             .then(res => {
                 console.log(res)
             })
