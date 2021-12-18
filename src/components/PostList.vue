@@ -1,13 +1,12 @@
 <template>
     <div v-if="error">{{error}}</div>
-    <div v-else v-for="post in posts.data" :key="post.id" class="posts">
+    <div v-else v-for="post in posts.data" :key="post.id" class="posts flex flex-col flex-nowrap">
             <div class="title">
                 <h2>{{post.title}}</h2>
             </div>
             <div class="content">
-                <div class="image">
+                <div class="image mx-auto w-1/3">
                     <img :src="post.image" :alt="post.imageAltText" loading="lazy">
-                    
                 </div>
                 <div class="texte">
                     {{post.content}}
@@ -23,7 +22,7 @@
             </div>
             <div class="comments">
                 <div>
-                    <p>commentaires</p>
+                    <p>commentaires:</p>{{post.Commentaire.length}}
                 </div>
                 <div class="commentaires">
                     
@@ -63,29 +62,5 @@
 </script>
 
 <style lang="scss" scoped>
-    .posts{
-        border: 2px solid black;
-        width: 100%;
-        margin: 40px auto;
-        border-radius: 15px;
-        .title{
-            border: 1px solid black;
-            border-radius: 15px;
-        }
-        .content{
-            border: 1px solid black;
-            border-radius: 15px;
-        }
-        .postFooter{
-            border: 2px solid black;
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            
-            div{
-                margin: 0 20px
-            }
-
-        }
-    }
+   
 </style>

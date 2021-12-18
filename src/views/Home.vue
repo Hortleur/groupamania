@@ -1,7 +1,8 @@
 <template>
-  <Header/>
+<div class=" flex flex-col flex-nowrap h-screen justify-between">
+    <Header/>
   <div>
-    <h1>
+    <h1 class="font-bold text-lg">
       Bienvenue sur le réseau de Groupomania
     </h1>
   </div>
@@ -9,6 +10,8 @@
     <Login />
   </div>
   <Footer />
+</div>
+
 </template>
 
 <script>
@@ -34,11 +37,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  h1{
-    font-size: 45px
-  }
-  .login{
-    margin: 13vh auto;
-    width : 50%;
-  }
+
 </style>

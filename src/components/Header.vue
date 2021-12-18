@@ -1,6 +1,6 @@
 <template>
     <header>
-        <img src="../assets/logo_groupamania.webp" alt="Logo groupamania"> 
+        <img src="../assets/groupomania_logo.webp" alt="Logo groupamania"> 
     </header>
 </template>
 

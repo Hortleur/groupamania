@@ -1,8 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import Post from '../views/Post.vue'
-import Profile from '../views/Profile.vue'
-import PostPage from '../views/PostPage.vue'
 
 
 const routes = [
@@ -14,17 +11,17 @@ const routes = [
   {
     path : '/Post',
     name:'Post',
-    component: Post
+    component: () => import('../views/Post.vue')
   },
   {
     path: '/Profile',
     name:'Profile',
-    component: Profile
+    component: () => import('../views/Profile.vue')
   },
   {
     path: '/PostPage',
     name: 'PostPage',
-    component: PostPage
+    component: () => import('../views/PostPage.vue')
   }
 ]
 

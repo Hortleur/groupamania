@@ -1,27 +1,27 @@
 <template>
-    <div class="card">
-        <h2 class="card_title" v-if="mode == 'login'">Connexion</h2>
-        <h2 class="card_title" v-else>Inscription</h2>
-        <p class="card_subtitle" v-if="mode == 'login'">Pas encore de compte ? <span class="card_action" @click="switchToCreate">Créer un compte</span></p>
-        <p class="card_subtitle" v-else>Déjà un compte ? <span class="card_action" @click="switchToLogin">Se Connecter</span></p>
+    <div class="card border-2 bg-red-400 rounded-3xl sm:w-1/2 lg:w-1/3 mx-auto my-4">
+        <h2 class="card_title text-xl font-bold my-4" v-if="mode == 'login'">Connexion</h2>
+        <h2 class="card_title text-xl font-bold my-4" v-else>Inscription</h2>
+        <p class="card_subtitle" v-if="mode == 'login'">Pas encore de compte ? <span class="card_action text-base hover:text-green-600 cursor-pointer" @click="switchToCreate">Créer un compte</span></p>
+        <p class="card_subtitle text-lg" v-else>Déjà un compte ? <span class="card_action text-base hover:text-green-600 cursor-pointer" @click="switchToLogin">Se Connecter</span></p>
         <div class="form-row">
-            <input v-model="email" type="text" placeholder="exemple@email.com" class="form-row__input">
+            <input v-model="email" type="text" placeholder=" exemple@email.com" class=" my-3 rounded-lg placeholder-gray-600">
         </div>
         <div class="form-row" v-if="mode == 'create'">
-            <input v-model="prenom" type="text" placeholder="Prenom" class="form-row__input">
+            <input v-model="prenom" type="text" placeholder=" Prenom" class="my-6 rounded-lg placeholder-gray-600">
         </div>
         <div class="form-row">
-            <input v-model="password" type="password" placeholder="Mot de passe" class="form-row__input">
+            <input v-model="password" type="password" placeholder=" Mot de passe" class="my-3 rounded-lg placeholder-gray-600">
         </div>
         <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
             Adresse mail ou mot de passe invalide
         </div>
         <div class="form-row">
-            <button @click="login()" class="button" v-if="mode == 'login'">
+            <button @click="login()" class="border-2 rounded-2xl p-2 my-4 bg-red-600 text-xl shadow-md cursor-pointer hover:text-green-600 scale-50" v-if="mode == 'login'">
                 <span v-if="status == loading">Connexion en cours</span>
                 <span v-else>Connexion</span> 
             </button>
-            <button @click="createAccount()" class="button" v-else>
+            <button @click="createAccount()" class="border-2 rounded-2xl p-2 my-4 bg-red-600 text-xl shadow-md cursor-pointer hover:text-green-600 scale-50" v-else>
                 S'inscrire
             </button>
         </div>
@@ -84,36 +84,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .card{
-        background-color: lighten(#f52c09, 45);
-        border: 2px solid black;
-        width: 50%;
-        margin: 20px auto;
-        padding: 20px 0;
-        span{
-            color: #f52c09;
-            &:hover{
-                cursor: pointer;
-            }
-        }
-        h2{
-            font-weight: bold
-        }
-        .form-row{
-            margin: 10px auto;
-            input{
-                width: 200px;
-                height: 30px;
-                border-radius: 15px;
-                border: 2px solid black;
-            }
-            button{
-                width: 150px;
-                height: 30px;
-                border-radius: 15px;
-                border: 2px solid black;
-                font-weight: bold;
-            }
-        }
-    }
+
 </style>

@@ -13,12 +13,6 @@
 </script>
 
 <style lang="scss">
-body{
-  height: 100%;
-}
-html{
-  height: 100%
-}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -26,5 +20,7 @@ html{
   text-align: center;
   color: black;
 }
-
+html{
+  background-color: lighten(red, 30)
+}
 </style>
