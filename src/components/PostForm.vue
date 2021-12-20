@@ -1,17 +1,20 @@
 <template>
-    <div class="formPost">
-        <div class="form-row">
-            <input v-model="title" type="text" name="postTitle" id="postTitle" placeholder="Titre">
+    <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl">
+        <div class=" my-4">
+            <input v-model="title" type="text" name="postTitle" id="postTitle" placeholder=" Titre" class=" w-full rounded-2xl border-black border-2 ">
         </div>
-        <div class="form-row">
-            <textarea v-model="content" name="content" id="content" cols="35" rows="5"></textarea>
+        <div class="">
+            <textarea v-model="content" name="content" id="content" cols="60" rows="5" class=" border-2 border-black rounded-2xl"></textarea>
         </div>
-        <div class="form-row image">
-            <input v-model="imageAltText" type="text" name="imageAltText" id="imageAltText" placeholder="Description de l'image">
-            <input @change="onFileSelected" type="file" name="image" id="image">
+        <div class=" my-4">
+            <input v-model="imageAltText" type="text" name="imageAltText" id="imageAltText" placeholder=" Description de l'image" class=" w-full rounded-2xl border-2 border-black
+            ">
+            <input @change="onFileSelected" type="file" name="image" id="image" class=" my-4">
         </div>
-        <div class="form-row">
-            <button @click="onPost" class="button" type="submit"><i class="fas fa-share"></i></button>
+        <div class=" my-4">
+            <button @click="onPost" class="button border-2 border-black rounded-full w-1/4 p-4 hover:bg-orange-600" type="submit">
+               <i class="fas fa-paper-plane text-2xl"></i>
+            </button>
         </div>
     </div>
 </template>

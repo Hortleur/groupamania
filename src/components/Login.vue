@@ -1,5 +1,5 @@
 <template>
-    <div class="card border-2 bg-red-400 rounded-3xl sm:w-1/2 lg:w-1/3 mx-auto my-4">
+    <div class="card border-2 bg-pink-100 rounded-3xl sm:w-1/2 lg:w-1/3 mx-auto my-4">
         <h2 class="card_title text-xl font-bold my-4" v-if="mode == 'login'">Connexion</h2>
         <h2 class="card_title text-xl font-bold my-4" v-else>Inscription</h2>
         <p class="card_subtitle" v-if="mode == 'login'">Pas encore de compte ? <span class="card_action text-base hover:text-green-600 cursor-pointer" @click="switchToCreate">Créer un compte</span></p>

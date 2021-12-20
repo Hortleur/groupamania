@@ -4,7 +4,7 @@ const createHttpError = require('http-errors')
 exports.createProfile = async (req, res, next) => {
     try {
         const profile = await auth.createProfile(req, res)
-        res.status(200).json({
+        res.status(201).json({
             status: true,
             message: 'Profil créer',
             data: profile
@@ -23,6 +23,19 @@ exports.editProfile = async (req, res, next) => {
             data: profile
         })
     } catch (e) {
+        next(createHttpError(e.statusCode, e.message))
+    }
+}
+
+exports.getProfile = async(req, res, next) => {
+    try{
+        const profile = await auth.getProfile(req, res)
+        res.status(200).json({
+            status: true,
+            message:'profile bien récupérer',
+            data: profile
+        })
+    } catch (e){
         next(createHttpError(e.statusCode, e.message))
     }
 }

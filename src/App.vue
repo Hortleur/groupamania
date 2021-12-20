@@ -21,6 +21,6 @@
   color: black;
 }
 html{
-  background-color: lighten(red, 30)
+  background-color: black
 }
 </style>

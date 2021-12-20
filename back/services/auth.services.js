@@ -74,19 +74,29 @@ exports.deleteUser = async (req, res) => {
 
 
 // Profile
+exports.getProfile = async (req, res) => {
+    const id = req.params
+    const profile = await prisma.profile.findUnique({
+        where: {id} 
+    })
+    return profile
+}
 
 exports.createProfile = async (req, res) => {
     const{
         bio,
-        picture
-    } = req.body
+        userId,
+        imageAltText
+    } = JSON.parse(req.body.formContent)
+    const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
     const profile = await prisma.profile.create({
         data:{
             bio,
-            picture : picture = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+            image,
+            imageAltText
         },
-        include: {
-            user: true
+        user: {
+            connect: {id: userId}
         }
     })
     return profile
@@ -96,17 +106,16 @@ exports.editProfile = async (req, res) => {
     const {id} = req.params
     const {
         bio,
-        picture
-     } = req.body
+        imageAltText
+     } = JSON.parse(req.body.formContent)
+     const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
     const profile = await prisma.profile.update({
         where: {id},
         data : {
             bio,
-            picture : picture = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+            image,
+            imageAltText
         },
-        include: {
-            user: true
-        }
     })
     return profile
 }
