@@ -2,7 +2,7 @@
 <div class=" flex flex-col flex-nowrap h-screen justify-between">
     <Header/>
   <div>
-    <h1 class="font-bold text-lg">
+    <h1 class="font-bold text-3xl text-white">
       Bienvenue sur le réseau de Groupomania
     </h1>
   </div>

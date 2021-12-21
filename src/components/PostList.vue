@@ -7,7 +7,7 @@
                 <span>{{post.Likes.likeCount}}</span>
             </div>
         </div>
-        <div>
+        <div class=" w-full">
             <div>
             <div class="title border-b-4 border-black my-3 flex content-center justify-center">
                 <h2 class=" text-2xl font-bold">{{post.title}}</h2>
@@ -24,13 +24,13 @@
             </div>
         </div>
 
-        <div class="postFooter">
+        <div class="postFooter ">
             <div class="userName">
-                <span>Posté par:</span> {{post.user.name}}
+                <span>Posté par :</span> {{post.user.name}}
             </div>
             <div class="comments">
                 <div>
-                    <p>commentaires:</p>{{post.Commentaire.length}}
+                    <p>commentaire(s) : {{post.Commentaire.length}} commentaire(s)</p>
                 </div>
                 <div class="commentaires">
 
