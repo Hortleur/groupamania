@@ -58,7 +58,7 @@
             const posts = ref(null)
             const error = ref(null)
             try {
-                const postsResponse = await fetch('http://localhost:3000/api/auth/post', {
+                const postsResponse = await fetch('http://localhost:3000/api/post', {
                     headers: {
                         "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
                     }

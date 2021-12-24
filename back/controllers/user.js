@@ -1,5 +1,9 @@
 const auth = require('../services/auth.services')
 const createHttpError = require('http-errors');
+const {
+    PrismaClient
+} = require('@prisma/client');
+const prisma = new PrismaClient();
 
 
 exports.signup = async (req, res, next) => {
@@ -32,20 +36,48 @@ exports.signup = async (req, res, next) => {
 
 exports.all = async (req, res, next) => {
     try {
-        const user = await auth.all();
+        const allUsers = await prisma.user.findMany()
         res.status(200).json({
             status: true,
             message: 'All users',
-            data: user
+            data: allUsers
         })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message))
     }
 }
 
+exports.oneUser = async (req, res, next) => {
+    try{
+        const id = req.user.payload.id
+    const oneUser = await prisma.user.findUnique({
+        where: {
+            id: Number(id)
+        },
+        include:{
+            profile: true
+        }
+    })
+        res.status(200).json({
+            status: true,
+            message: 'One user',
+            data: oneUser
+        })
+    } catch(e){
+        next(createHttpError(e.statusCode, e.message))
+    }
+}
+
 exports.deleteUser = async (req, res, next) => {
     try {
-        const user = await auth.deleteUser(req, res)
+        const {
+            id
+        } = req.params
+        const user = await prisma.user.delete({
+            where: {
+                id: id
+            },
+        })
         res.status(201).json({
             status: true,
             message: "Compte bien supprimé",

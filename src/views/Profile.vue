@@ -28,10 +28,6 @@
             </div>
         </div>
         <div>
-            
-        </div>
-
-        <div>
             <Footer />
         </div>
     </div>
@@ -41,7 +37,7 @@
     import Header from "../components/Header.vue";
     import Footer from "../components/Footer.vue";
     import ProfileForm from "../components/ProfileForm.vue";
-
+    
     export default {
         name: 'Profile',
 
@@ -59,7 +55,7 @@
             logOut() {
                 localStorage.clear()
             }
-        }
+        },
     }
 </script>
 

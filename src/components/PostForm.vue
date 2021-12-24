@@ -42,7 +42,7 @@ export default {
         },
         onPost(){
             const instance = axios.create({
-                baseURL: "http://localhost:3000/api/auth",
+                baseURL: "http://localhost:3000/api",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "multipart/form-data"

@@ -23,10 +23,10 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json())
-app.use('/api/auth/', userRoutes);
-app.use('/api/auth/', profileRoutes);
-app.use('/api/auth/', postRoutes);
-app.use('/api/auth/', commentRoutes);
+app.use('/api', userRoutes);
+app.use('/api', profileRoutes);
+app.use('/api', postRoutes);
+app.use('/api', commentRoutes);
 app.use('/image', express.static(path.join(__dirname, 'image')));
 
 module.exports = app;

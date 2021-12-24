@@ -3,7 +3,10 @@ import { createStore } from 'vuex'
 
 const axios = require('axios');
 const instance = axios.create({
-  baseURL: "http://localhost:3000/api/auth",
+  baseURL: "http://localhost:3000/api",
+  headers: {
+    "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+  }
 })
 
 
@@ -31,9 +34,7 @@ const store = createStore({
         .then(function (response) {
           commit('setStatus', '');
           commit('logUser', response.data)
-          console.log(response.data)
         resolve(response);
-        console.log(response.headers)
       })
       .catch(function (error) {
         commit('setStatus', 'error_log');
@@ -53,6 +54,20 @@ const store = createStore({
         reject(error);
       })
     })},
+    getPosts: ({commit}) => {
+      return new Promise((resolve, reject) => {
+        commit;
+        instance.get('/post')
+        .then(function(response) {
+          commit('setStatus', '')
+          resolve(response)
+        })
+        .catch(function(error) {
+          commit('setStatus', 'error_posts')
+          reject(error)
+        })
+      })
+    }
   },
   modules: {
   }

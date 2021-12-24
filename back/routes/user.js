@@ -9,7 +9,9 @@ router.post('/signup', user.signup)
 router.post('/login', user.login)
 
 //read
-router.get('/', auth, user.all)
+router.get('/user', auth, user.all)
+
+router.get('/user/profile', auth, user.oneUser)
 
 //delete
 router.delete('/delete/:id', auth, user.deleteUser)

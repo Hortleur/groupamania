@@ -5,13 +5,13 @@
         <p class="card_subtitle" v-if="mode == 'login'">Pas encore de compte ? <span class="card_action text-base hover:text-green-600 cursor-pointer" @click="switchToCreate">Créer un compte</span></p>
         <p class="card_subtitle text-lg" v-else>Déjà un compte ? <span class="card_action text-base hover:text-green-600 cursor-pointer" @click="switchToLogin">Se Connecter</span></p>
         <div class="form-row">
-            <input v-model="email" type="text" placeholder=" exemple@email.com" class=" my-3 rounded-lg placeholder-gray-600 border-2 border-black">
+            <input v-model="email" type="text" placeholder=" exemple@email.com" class=" py-2 my-3 rounded-lg placeholder-gray-600 border-2 border-black text-center">
         </div>
         <div class="form-row" v-if="mode == 'create'">
-            <input v-model="prenom" type="text" placeholder=" Prenom" class="my-6 rounded-lg placeholder-gray-600 border-2 border-black">
+            <input v-model="prenom" type="text" placeholder=" Prenom" class=" py-2 my-6 rounded-lg placeholder-gray-600 border-2 border-black text-center">
         </div>
         <div class="form-row">
-            <input v-model="password" type="password" placeholder=" Mot de passe" class="my-3 rounded-lg placeholder-gray-600 border-2 border-black">
+            <input v-model="password" type="password" placeholder=" Mot de passe" class=" py-2 my-3 rounded-lg placeholder-gray-600 border-2 border-black text-center">
         </div>
         <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
             Adresse mail ou mot de passe invalide

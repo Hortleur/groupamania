@@ -10,7 +10,6 @@ router.post('/createComment', auth, comment.createComment)
 //read
 
 router.get('/comment', auth, comment.allComment)
-router.get('/comment/:id', auth, comment.oneComment)
 
 //delete
 router.delete('/comment/delete/:id', auth, comment.deleteComment)

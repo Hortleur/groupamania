@@ -1,9 +1,25 @@
-const auth = require('../services/auth.services')
+const {
+    PrismaClient
+} = require('@prisma/client');
+const prisma = new PrismaClient();
 const createHttpError = require('http-errors')
 
 exports.createProfile = async (req, res, next) => {
     try {
-        const profile = await auth.createProfile(req, res)
+        const{
+            bio,
+            userId,
+        } = JSON.parse(req.body.formContent)
+        const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+        const profile = await prisma.profile.create({
+            data:{
+                bio,
+                image,
+                user: {
+                    connect: {id: userId}
+                }
+            } 
+        })
         res.status(201).json({
             status: true,
             message: 'Profil créer',
@@ -16,26 +32,26 @@ exports.createProfile = async (req, res, next) => {
 
 exports.editProfile = async (req, res, next) => {
     try {
-        const profile = await auth.editProfile(req, res)
+        const {id} = req.params
+    const {
+        bio,
+        imageAltText
+     } = JSON.parse(req.body.formContent)
+     const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+    const profile = await prisma.profile.update({
+        where: {id},
+        data : {
+            bio,
+            image,
+            imageAltText
+        },
+    })
         res.status(201).json({
             status: true,
             message: 'Profil bien mis à jour',
             data: profile
         })
     } catch (e) {
-        next(createHttpError(e.statusCode, e.message))
-    }
-}
-
-exports.getProfile = async(req, res, next) => {
-    try{
-        const profile = await auth.getProfile(req, res)
-        res.status(200).json({
-            status: true,
-            message:'profile bien récupérer',
-            data: profile
-        })
-    } catch (e){
         next(createHttpError(e.statusCode, e.message))
     }
 }

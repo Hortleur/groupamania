@@ -1,10 +1,30 @@
-const auth = require('../services/auth.services')
+const {
+    PrismaClient
+} = require('@prisma/client');
+const prisma = new PrismaClient();
 const createHttpError = require('http-errors')
 const fs = require('fs')
 
 exports.createPost = async(req, res, next) => {
     try {
-        const post = await auth.createPost(req, res)
+        const {
+            title,
+            content,
+            imageAltText,
+            userId
+        } = JSON.parse(req.body.formContent)
+        const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+        const post = await prisma.post.create({
+            data:{
+                title,
+                content,
+                image,
+                imageAltText,
+                user:{
+                   connect: {id : userId}
+                } 
+            },
+        })
         res.status(200).json({
             status: true,
             message: "Post créer",
@@ -17,11 +37,20 @@ exports.createPost = async(req, res, next) => {
 
 exports.allPost = async(req, res, next) => {
     try {
-        const post = await auth.allPost(req, res)
+        const allPost = await prisma.post.findMany({
+            orderBy:{
+                createdAt: 'desc'
+            },
+            include:{
+                user: true,
+                Commentaire: true,
+                Likes: true
+            }
+        })
         res.status(200).json({
             status: true,
             message: 'All Posts',
-            data: post
+            data: allPost
         })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message))
@@ -30,11 +59,21 @@ exports.allPost = async(req, res, next) => {
 
 exports.onePost = async(req, res, next) => {
     try {
-        const post = await auth.onePost(req, res)
+        const {id} = req.params
+    const onePost = await prisma.post.findUnique({
+        where: {
+            id: Number(id)
+        },
+        include:{
+            user: true,
+            Commentaire: true,
+            Likes: true
+        }
+    })
         res.status(200).json({
             status: true,
             message: 'One post',
-            data: post
+            data: onePost
         })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message))
@@ -43,7 +82,12 @@ exports.onePost = async(req, res, next) => {
 
 exports.deletePost = async(req, res, next) => {
     try {
-        const post = await auth.deletePost(req, res)
+        const {id} = req.params
+    const post = await prisma.post.delete({
+        where: {
+            id: Number(id)
+        } 
+    })
         const filename = image.imageUrl.split('/image/')[1]
         fs.unlink(`image/${filename}`, () => {
             res.status(200).json({

@@ -1,13 +1,25 @@
-const auth = require('../services/auth.services')
 const createHttpError = require('http-errors')
+const {
+    PrismaClient
+} = require('@prisma/client');
+const prisma = new PrismaClient();
 
 exports.createComment = async(req, res, next) => {
     try {
-        const comment = await auth.createComment(req, res)
+        const {comment} = req.body
+    const commentaire = await prisma.commentaire.create({
+        data:{
+            comment
+        },
+        include:{
+            post: true,
+            user: true
+        }
+    })
         res.status(200).json({
             status: true,
             message: "Commentaire créer",
-            data: comment
+            data: commentaire
         })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message))
@@ -16,24 +28,11 @@ exports.createComment = async(req, res, next) => {
 
 exports.allComment = async(req, res, next) => {
     try {
-        const comment = await auth.allComment(req, res)
+        const commentaire = await prisma.commentaire.findMany()
         res.status(200).json({
             status: true,
             message:'All Comments',
-            data: comment
-        })
-    } catch (e) {
-        next(createHttpError(e.statusCode, e.message))
-    }
-}
-
-exports.oneComment = async (req, res, next) => {
-    try {
-        const comment = await auth.oneComment(req, res)
-        res.status(200).json({
-            status: true,
-            message: 'un commentaire',
-            data: comment
+            data: commentaire
         })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message))
@@ -42,11 +41,16 @@ exports.oneComment = async (req, res, next) => {
 
 exports.deleteComment = async(req, res, next) => {
     try {
-        const comment = await auth.deleteComment(req, res)
+        const {id} = req.params
+    const commentaire = await prisma.commentaire.delete({
+        where: {
+            id: Number(id)
+        }
+    })
         res.status(200).json({
             status: true,
             message:'Commentaire bien supprimer',
-            data: comment
+            data: commentaire
         })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message))

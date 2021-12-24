@@ -27,7 +27,6 @@ model Post {
 model Profile {
   id      Int    @id @default(autoincrement())
   image String
-  imageAltText String
   bio     String?
   user    User   @relation(fields: [userId], references: [id])
   userId  Int    @unique
