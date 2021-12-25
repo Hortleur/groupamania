@@ -1,7 +1,9 @@
 <template>
+<router-link to="/PostPage" >
     <div v-if="error">{{error}}</div>
+    
     <div v-else v-for="post in posts.data" :key="post.id" class="posts flex flex-row flex-nowrap bg-pink-100 my-10 rounded-2xl mx-auto w-2/3">
-        <div class=" flex flex-col flex-nowrap border-r-4 border-black justify-center">
+        <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
             <div class="likes mx-4">
                 <i class="fas fa-heart"></i>
                 <span>{{post.Likes.likeCount}}</span>
@@ -9,24 +11,24 @@
         </div>
         <div class=" w-full">
             <div>
-            <div class="title border-b-4 border-black my-3 flex content-center justify-center">
+            <div class="title border-b-4 border-orangeGroupo my-3 flex content-center justify-start pl-2">
                 <h2 class=" text-2xl font-bold">{{post.title}}</h2>
             </div>
         </div>
         <div>
             <div class="content">
-                <div v-if="post.image" class="image mx-auto">
+                <div v-if="post.image" class="image mx-auto p-6 border-b-4 border-orangeGroupo">
                     <img :src="post.image" :alt="post.imageAltText" loading="lazy">
                 </div>
-                <div v-if="post.content" class="texte">
+                <div v-if="post.content" class=" border-b-4 border-orangeGroupo p-3">
                     {{post.content}}
                 </div>
             </div>
         </div>
 
-        <div class="postFooter ">
+        <div class="postFooter flex flex-row flex-nowrap justify-between p-4">
             <div class="userName">
-                <span>Posté par :</span> {{post.user.name}}
+                <span><!-- Ajouter photo de profil--></span> {{post.user.name}}
             </div>
             <div class="comments">
                 <div>
@@ -40,6 +42,7 @@
         </div>
         
     </div>
+    </router-link>
 </template>
 
 <script>

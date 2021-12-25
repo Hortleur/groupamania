@@ -1,13 +1,13 @@
 <template>
     <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl">
         <div class=" my-4">
-            <input v-model="title" type="text" name="postTitle" id="postTitle" placeholder=" Titre" class=" w-full rounded-2xl border-black border-2 ">
+            <input v-model="title" type="text" name="postTitle" id="postTitle" placeholder=" Titre" class=" w-full rounded-2xl border-black border-2 py-2 px-5">
         </div>
         <div class="">
-            <textarea v-model="content" name="content" id="content" cols="60" rows="5" class=" border-2 border-black rounded-2xl"></textarea>
+            <textarea v-model="content" name="content" id="content" cols="60" rows="5" class=" border-2 border-black rounded-2xl py-2 px-5"></textarea>
         </div>
         <div class=" my-4">
-            <input v-model="imageAltText" type="text" name="imageAltText" id="imageAltText" placeholder=" Description de l'image" class=" w-full rounded-2xl border-2 border-black
+            <input v-model="imageAltText" type="text" name="imageAltText" id="imageAltText" placeholder=" Description de l'image" class=" w-full rounded-2xl border-2 border-black py-2 px-5
             ">
             <input @change="onFileSelected" type="file" name="image" id="image" class=" my-4">
         </div>
