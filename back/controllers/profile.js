@@ -10,6 +10,7 @@ exports.createProfile = async (req, res, next) => {
             bio,
             userId,
         } = JSON.parse(req.body.formContent)
+        console.log(req.body.formContent)
         const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
         const profile = await prisma.profile.create({
             data:{
@@ -35,7 +36,6 @@ exports.editProfile = async (req, res, next) => {
         const {id} = req.params
     const {
         bio,
-        imageAltText
      } = JSON.parse(req.body.formContent)
      const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
     const profile = await prisma.profile.update({
@@ -43,7 +43,6 @@ exports.editProfile = async (req, res, next) => {
         data : {
             bio,
             image,
-            imageAltText
         },
     })
         res.status(201).json({

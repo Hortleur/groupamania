@@ -2,7 +2,7 @@
     <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl">
         <div class="my-4">
             <label for="bio"> bio:</label>
-            <textarea v-model="bio" name="bio" id="bio" cols="30" rows="5"></textarea>
+            <textarea v-model="bio" name="bio" id="bio" cols="30" rows="5" class=" px-2"></textarea>
         </div>
         <div>
             <input @change="onFileSelected" type="file" name="image" id="image">
@@ -36,7 +36,7 @@
             },
             createProfile(){
                 const instance = axios.create({
-                    baseURL: "http://localhost:3000/api/auth",
+                    baseURL: "http://localhost:3000/api",
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "multipart/form-data"

@@ -7,7 +7,7 @@
         </div>
         <div class=" border-2 rounded-xl border-white m-4">
             <div class=" border-b-2 border-orangeGroupo my-3 mx-auto w-2/3">
-                <p> 
+                <p class=" text-white"> 
                     chat
                 </p>
             </div>
