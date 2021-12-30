@@ -11,7 +11,7 @@ router.post('/createPost', auth, multer, post.createPost)
 //read
 
 router.get('/post', auth, post.allPost)
-router.get('/post/:id', auth, post.onePost)
+router.get('/post/onePost/:id', auth, post.onePost)
 
 router.delete('/post/delete/:id', auth, post.deletePost)
 

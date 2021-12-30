@@ -26,7 +26,6 @@
             
         </div>
         <div class=" mx-auto sm:flex sm:flex-row-reverse sm:flex-nowrap my-8 sm:justify-around">
-            <div v-if="error">{{error}}</div>
             <div class="">
                 <Suspense>
                     <PostList />
@@ -45,28 +44,12 @@
     import PostList from "../components/PostList.vue";
     import Footer from "../components/Footer.vue";
     import PostForm from "../components/PostForm.vue";
-    import {
-        ref,
-        onErrorCaptured
-    } from "vue";
-
-
 
     export default {
         name: 'Post',
         data(){
             return{
                 toggleModal: false
-            }
-        },
-        setup() {
-            const error = ref(null)
-
-            onErrorCaptured(e => {
-                error.value = e
-            })
-            return {
-                error
             }
         },
         components: {

@@ -1,9 +1,6 @@
 const axios = require('axios');
 const instance = axios.create({
   baseURL: "http://localhost:3000/api",
-  headers: {
-    "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
-  }
 })
 
 export const state = {

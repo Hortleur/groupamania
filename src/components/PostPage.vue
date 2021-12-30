@@ -1,8 +1,10 @@
 <template>
-    <div v-if="error">{{error}}</div>
-    <div v-else v-for="post in allPosts" :key="post.id"
-        class="posts flex flex-row flex-nowrap flex-shrink-0 flex-grow-0 bg-pink-100 my-10 rounded-2xl mx-auto w-1/3">
-        <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
+    <div class=" flex flex-col flex-nowrap h-screen justify-between">
+        <div>
+            <Header/>
+        </div>
+        <div>
+            <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
             <div class="likes mx-4">
                 <i class="fas fa-heart"></i>
                 <span>{{post.Likes.length}}</span>
@@ -31,34 +33,63 @@
                         <!--Ajouter photo de profil-->{{post.user.name}}</span>
                 </div>
                 <div class="comments">
-                    <router-link :to="'/Post/' + post.id">
                         <div>
                             <p class=" hover:text-green-600">commentaire(s) : {{post.Commentaire.length}} commentaire(s)
                             </p>
                         </div>
-                    </router-link>
                 </div>
             </div>
+        </div>
+        </div>
+        <div>
+            <Footer/>
         </div>
     </div>
 </template>
 
 <script>
-    import {
-        mapGetters,
-        mapActions
-    } from "vuex";
-    export default {
-        name: "Post",
-        computed: mapGetters(['allPosts']),
-        components: {
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+const axios = require('axios')
+const instance = axios.create({
+    baseURL: "http://localhost:3000/api",
+    headers: {
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+              }
+})
 
+    export default {
+        components:{
+            Header,
+            Footer
         },
-        methods: {
-            ...mapActions(['fetchPosts'])
+        data() {
+            return{
+                id: this.$route.params.id,
+                post:{}
+            }
         },
-        created() {
-            this.fetchPosts()
+        created(){
+           /* instance.get('http://localhost:3000/api/post/onePost/' + this.id)
+            .then(function(post){
+                console.log(post.data.data)
+                return Promise.resolve(this.post = post.data.data)
+            })
+            .catch(function(error){
+                console.log(error)
+            })*/
+            return new Promise((resolve, reject) => {
+                instance.get('/post/onePost/' + this.id)
+                .then(function(res) {
+                    console.log(res)
+                    this.post = res.data.data
+                    
+                resolve(res)
+                })
+                .catch(function(error){
+                    reject(error)
+                })
+            })
         }
     }
 </script>
