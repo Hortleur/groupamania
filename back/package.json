@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^3.5.0",
+    "@prisma/client": "^3.7.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
@@ -23,6 +23,6 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "prisma": "^3.5.0"
+    "prisma": "^3.7.0"
   }
 }

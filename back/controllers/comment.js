@@ -6,32 +6,24 @@ const prisma = new PrismaClient();
 
 exports.createComment = async(req, res, next) => {
     try {
-        const {comment} = req.body
+        const {comment,
+               postId,
+               userId
+                } = req.body
     const commentaire = await prisma.commentaire.create({
         data:{
-            comment
-        },
-        include:{
-            post: true,
-            user: true
+            comment,
+            user:{
+                connect: {id : userId}
+            },
+            post:{
+                connect:{id: postId}
+            }
         }
     })
         res.status(200).json({
             status: true,
             message: "Commentaire créer",
-            data: commentaire
-        })
-    } catch (e) {
-        next(createHttpError(e.statusCode, e.message))
-    }
-}
-
-exports.allComment = async(req, res, next) => {
-    try {
-        const commentaire = await prisma.commentaire.findMany()
-        res.status(200).json({
-            status: true,
-            message:'All Comments',
             data: commentaire
         })
     } catch (e) {

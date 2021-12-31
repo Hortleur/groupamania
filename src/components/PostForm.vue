@@ -61,7 +61,7 @@ export default {
             fd.append('formContent', JSON.stringify(formContent))
             instance.post('/createPost', fd)
             .then(res => {
-                res.json()
+                return res.json()
             })
         }
     }
