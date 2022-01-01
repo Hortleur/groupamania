@@ -8,6 +8,8 @@ const multer = require('../middleware/multer-config')
 //create
 router.post('/createProfile', auth, multer, profile.createProfile)
 
+//read
+router.get('/profile/:id', auth, profile.getProfile)
 //update
 router.put('/editProfile/:id', auth, multer, profile.editProfile)
 

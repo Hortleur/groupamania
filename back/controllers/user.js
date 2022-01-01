@@ -70,12 +70,10 @@ exports.oneUser = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
     try {
-        const {
-            id
-        } = req.params
+        const id = req.user.payload.id
         const user = await prisma.user.delete({
             where: {
-                id: id
+                id: Number(id)
             },
         })
         res.status(201).json({

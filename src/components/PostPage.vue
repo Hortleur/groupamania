@@ -2,7 +2,7 @@
     <div class=" flex flex-col flex-nowrap h-screen justify-between">
         <div>
             <router-link to="/Post">
-            <Header />
+                <Header />
             </router-link>
         </div>
         <div v-if="loading" class=" mx-auto">
@@ -11,8 +11,14 @@
         <div v-else class=" flex flex-row w-1/2 bg-white mx-auto border-2 rounded-2xl">
             <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
                 <div class="likes mx-4">
-                    <i class="fas fa-heart"></i>
-                    <span>{{postItem.Likes.length}}</span>
+                    <div v-if="liked">
+                        <i @click="onLike" class="fas fa-heart text-red-700"></i>
+                    </div>
+                    <div v-else>
+                        <i @click="onLike" class="fas fa-heart "></i>
+                    </div>
+                    <span v-if="postItem.Likes.length === 0"> 0 </span>
+                    <span v-else>{{postItem.Likes.length}}</span>
                 </div>
             </div>
             <div class=" w-full">
@@ -48,29 +54,28 @@
                 <div class="commentaires">
                     <div class=" border-orangeGroupo border-t-4 border-b-4 py-4">
                         <form class=" flex justify-center">
-                            <textarea v-model="comment" cols="30" rows="5" class=" border-black border-2 p-2"></textarea>
-                            <button @click="sendComment" class=" bg-gray-500 p-4 rounded-r-lg hover:bg-green-600 font-bold">Commenter</button>
+                            <textarea v-model="comment" cols="30" rows="5"
+                                class=" border-black border-2 p-2"></textarea>
+                            <button @click="sendComment"
+                                class=" bg-gray-500 p-4 rounded-r-lg hover:bg-green-600 font-bold">Commenter</button>
                         </form>
                     </div>
-                    <div v-for="comment in commentaires" :key="comment.id" class=" flex flex-row flex-nowrap">
+                    <div v-for="comments in commentaires" :key="comments.id" class=" flex flex-row flex-nowrap justify-center">
                         <div>
-                            <div>
+                            <div class=" flex flex-row flex-nowrap justify-between">                                
                                 <div>
-                                    <img src="" alt="">
+                                    <span>il y a :{{comments.createdAt}}h</span>
                                 </div>
                                 <div>
-                                    <span>{{comment.userId}}</span>
-                                </div>
-                                <div>
-                                    <span>il y a :{{comment.createdAt}}h</span>
+                                    <i @click="deleteComment" class="fas fa-times text-red-700 ml-4 cursor-pointer"></i>
                                 </div>
                             </div>
                             <div>
-                                <p>{{ comment.comment }}</p>
+                                <p>{{ comments.comment }}</p>
                             </div>
                         </div>
-                        
-                    </div> 
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,6 +90,8 @@
     import Footer from "../components/Footer.vue";
     let gpc = localStorage.getItem('gpc')
     const UserId = JSON.parse(gpc).id
+
+
     const axios = require('axios')
     const instance = axios.create({
         baseURL: "http://localhost:3000/api",
@@ -103,12 +110,11 @@
                 id: this.$route.params.id,
                 postItem: {},
                 loading: true,
+                liked: false,
                 commentaires: [],
                 comment: '',
                 userId: UserId,
                 postId: this.$route.params.id,
-                user:''
-                
             }
         },
         methods: {
@@ -120,37 +126,60 @@
                         this.commentaires = this.postItem.Commentaire
                     })
             },
-            sendComment(){
+            sendComment() {
                 instance.post('/createComment', {
-                    comment: this.comment,
-                    
-                    userId: this.userId,
-                    
-                    postId: Number(this.postId)
-                    
-                })
-                .then((res) => {
-                   return res
-                })
-                .catch((error) => {
-                    return error
-                })
+                        comment: this.comment,
+
+                        userId: this.userId,
+
+                        postId: Number(this.postId)
+
+                    })
+                    .then((res) => {
+                        return res
+                    })
+                    .catch((error) => {
+                        return error
+                    })
             },
-            getUser(){
-                instance.get('/user/profile',{
-                    id: this.comment.userId
+            deleteComment(){
+                /*instance.delete(`/comment/delete/`, {
+                    params:{
+                        id: 
+                    }
                 })
                 .then((res) => {
-                  console.log(res)
+                    console.log(res)
                 })
                 .catch((error) => {
-                    return error
-                })
+                    return(error)
+                })*/
+                console.log(this.commentaires) 
+            },
+            onLike(){
+                console.log(this.userId, this.postId)
+                if (this.liked === false) {
+                    instance.post('/like', {
+                        userId: this.userId,
+                        postId: JSON.parse(this.postId)
+                    })
+                    .then((res) =>{
+                        return res
+                        
+                    })
+                    .catch((error) => {
+                        return error
+                    })
+                }
+                else{
+                    instance.delete('/')
+                }
+                this.liked = !this.liked
             }
+
         },
         created() {
-            this.getPostItem(),
-            this.getUser()
+            this.getPostItem()
         }
     }
 </script>

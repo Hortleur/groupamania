@@ -13,6 +13,7 @@ const userRoutes = require('./routes/user')
 const profileRoutes = require('./routes/profile')
 const postRoutes = require('./routes/post')
 const commentRoutes = require('./routes/comment')
+const likeRoutes = require('./routes/likes')
 
 
 app.use((req, res, next) => {
@@ -27,6 +28,7 @@ app.use('/api', userRoutes);
 app.use('/api', profileRoutes);
 app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
+app.use('/api', likeRoutes);
 app.use('/image', express.static(path.join(__dirname, 'image')));
 
 module.exports = app;

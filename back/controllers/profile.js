@@ -1,5 +1,5 @@
 const {
-    PrismaClient
+    PrismaClient, Prisma
 } = require('@prisma/client');
 const prisma = new PrismaClient();
 const createHttpError = require('http-errors')
@@ -24,6 +24,24 @@ exports.createProfile = async (req, res, next) => {
         res.status(201).json({
             status: true,
             message: 'Profil créer',
+            data: profile
+        })
+    } catch (e) {
+        next(createHttpError(e.statusCode, e.message))
+    }
+}
+
+exports.getProfile = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const profile = await prisma.profile.findUnique({
+            where: {
+                userId: Number(id)
+            }
+        })
+        res.status(200).json({
+            status: true,
+            message: 'One Profile',
             data: profile
         })
     } catch (e) {

@@ -14,6 +14,6 @@ router.get('/user', auth, user.all)
 router.get('/user/profile', auth, user.oneUser)
 
 //delete
-router.delete('/delete/:id', auth, user.deleteUser)
+router.delete('/user/delete', auth, user.deleteUser)
 
 module.exports = router;

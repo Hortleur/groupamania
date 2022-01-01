@@ -18,8 +18,7 @@
         </div>
         <div class="form-row">
             <button @click="login()" class="border-2 rounded-2xl p-2 my-4 bg-red-600 text-xl shadow-md cursor-pointer hover:text-white font-semibold" v-if="mode == 'login'">
-                <span v-if="status == loading">Connexion</span>
-                <span v-else>Connexion  en cours</span> 
+                <span>Connexion</span> 
             </button>
             <button @click="createAccount()" class="border-2 rounded-2xl p-2 my-4 bg-red-600 text-xl shadow-md cursor-pointer hover:text-white font-semibold" v-else>
                 S'inscrire

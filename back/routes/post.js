@@ -13,6 +13,7 @@ router.post('/createPost', auth, multer, post.createPost)
 router.get('/post', auth, post.allPost)
 router.get('/post/onePost/:id', auth, post.onePost)
 
+//delete
 router.delete('/post/delete/:id', auth, post.deletePost)
 
 module.exports = router

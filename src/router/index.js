@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import PostPage from '../components/PostPage.vue'
 
 
 const routes = [
@@ -22,7 +21,7 @@ const routes = [
   {
     path: '/Post/:id',
     name: 'PostPage',
-    component: PostPage
+    component: () => import('../components/PostPage.vue')
   }
 ]
 
