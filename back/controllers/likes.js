@@ -6,10 +6,10 @@ exports.addLike = async(req, res, next) => {
     try {
         const {
             postId,
-            userId
         } = req.body
+        const userId = req.user.payload.id
         
-        const like = await prisma.likes.create({
+        const addLike = await prisma.likes.create({
             data:{
                 user:{
                     connect: {id : userId}
@@ -22,8 +22,44 @@ exports.addLike = async(req, res, next) => {
         res.status(200).json({
             status: true,
             message:"post Liké",
-            data: like
+            data: addLike
         })
+    } catch (e) {
+        next(createHttpError(e.statusCode, e.message))
+    }
+}
+
+exports.isLike = async(req, res, next) => {
+    try {
+        const id = req.user.payload.id
+        const userLiked = await prisma.likes.findUnique({
+            where: {
+                userId: Number(id)
+            }
+        })
+            res.status(200).json({
+                status: true,
+                message: 'User Liked',
+                data: userLiked
+            })
+    } catch (e) {
+        next(createHttpError(e.statusCode, e.message))
+    }
+}
+
+exports.deleteLike = async(req, res, next) => {
+    try {
+        const id = req.user.payload.id
+        const deletelike = await prisma.likes.delete({
+            where: {
+                userId: Number(id) 
+            }
+        })
+            res.status(200).json({
+                status: true,
+                message:'like supprimé',
+                data: deletelike
+            })
     } catch (e) {
         next(createHttpError(e.statusCode, e.message))
     }

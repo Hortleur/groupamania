@@ -63,10 +63,14 @@ exports.onePost = async(req, res, next) => {
     const onePost = await prisma.post.findUnique({
         where: {
             id: Number(id)
-        },
+        }, 
         include:{
             user: true,
-            Commentaire: true,
+            Commentaire:{
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            },
             Likes: true
         }
     })

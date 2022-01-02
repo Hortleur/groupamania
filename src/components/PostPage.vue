@@ -11,11 +11,11 @@
         <div v-else class=" flex flex-row w-1/2 bg-white mx-auto border-2 rounded-2xl">
             <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
                 <div class="likes mx-4">
-                    <div v-if="liked">
-                        <i @click="onLike" class="fas fa-heart text-red-700"></i>
+                    <div v-if="isLiked">
+                        <i @click="onDislike" class="fas fa-heart text-red-700 cursor-pointer text-2xl"></i>
                     </div>
                     <div v-else>
-                        <i @click="onLike" class="fas fa-heart "></i>
+                        <i @click="onLike" class="fas fa-heart cursor-pointer text-2xl"></i>
                     </div>
                     <span v-if="postItem.Likes.length === 0"> 0 </span>
                     <span v-else>{{postItem.Likes.length}}</span>
@@ -110,7 +110,7 @@
                 id: this.$route.params.id,
                 postItem: {},
                 loading: true,
-                liked: false,
+                isLiked: false,
                 commentaires: [],
                 comment: '',
                 userId: UserId,
@@ -142,44 +142,48 @@
                         return error
                     })
             },
-            deleteComment(){
-                /*instance.delete(`/comment/delete/`, {
-                    params:{
-                        id: 
-                    }
-                })
-                .then((res) => {
-                    console.log(res)
-                })
-                .catch((error) => {
-                    return(error)
-                })*/
-                console.log(this.commentaires) 
-            },
             onLike(){
-                console.log(this.userId, this.postId)
-                if (this.liked === false) {
+                if (this.isLiked === false) {
                     instance.post('/like', {
                         userId: this.userId,
                         postId: JSON.parse(this.postId)
                     })
-                    .then((res) =>{
-                        return res
-                        
+                    .then((res) => {
+                        return res    
                     })
                     .catch((error) => {
                         return error
                     })
-                }
-                else{
-                    instance.delete('/')
-                }
-                this.liked = !this.liked
+                    this.getPostItem()
+                }          
+            },
+            userLiked(){
+                instance.get('/like/isLike')
+                .then((res) => {
+                    if(res.data.data != null){
+                        this.isLiked = !this.isLiked  
+                    }else{
+                        this.isLiked = false
+                    }
+                    this.getPostItem()
+                })
+                .catch((error) => {
+                    return error
+                })
+                
+            },
+            onDislike(){
+                instance.delete('/like/deletelike')
+                .then((res) => {
+                    console.log(res)
+                })
+                .catch((error) => {
+                    return error
+                })
             }
-
         },
         created() {
-            this.getPostItem()
+            this.userLiked() 
         }
     }
 </script>
