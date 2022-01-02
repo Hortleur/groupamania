@@ -6,11 +6,14 @@
             </div>
             <div class=" md:mr-32 2xl:mr-56">
                 <router-link to="/Profile">
-                    <i @click="goToProfile" class="fas fa-user-astronaut text-3xl text-orangeGroupo mr-8"></i>
+                    <i @click="goToProfile" class="fas fa-user-astronaut text-3xl text-orangeGroupo"></i>
                 </router-link>
                 <button @click="toggleModal = !toggleModal">
-                    <i class="fas fa-plus-circle text-orangeGroupo text-3xl "></i>
-                </button> 
+                    <i class="fas fa-plus-circle text-orangeGroupo text-3xl mx-8"></i>
+                </button>
+                <router-link to="/Admin">
+                    <i class="fas fa-users-cog text-orangeGroupo text-3xl " v-if="admin"></i>
+                </router-link>
             </div>
         </div>
         <router-view />
@@ -44,12 +47,14 @@
     import PostList from "../components/PostList.vue";
     import Footer from "../components/Footer.vue";
     import PostForm from "../components/PostForm.vue";
+    
 
     export default {
         name: 'Post',
         data(){
             return{
-                toggleModal: false
+                toggleModal: false,
+                admin:false
             }
         },
         components: {
@@ -59,7 +64,16 @@
             PostForm
         },
         methods: {
-
+            isAdmin(){
+                const gpc = localStorage.getItem('gpc')
+                const gpcAdmin = JSON.parse(gpc).isAdmin
+                if(gpcAdmin > 0){
+                    this.admin = !this.admin
+                }
+            }
+        },
+        created(){
+            this.isAdmin()
         }
     }
 </script>

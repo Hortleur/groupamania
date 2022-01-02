@@ -36,7 +36,14 @@ exports.signup = async (req, res, next) => {
 
 exports.all = async (req, res, next) => {
     try {
-        const allUsers = await prisma.user.findMany()
+        const allUsers = await prisma.user.findMany({
+            include:{
+                profile: true,
+                posts: true,
+                Commentaire: true,
+                Likes: true
+            }
+        })
         res.status(200).json({
             status: true,
             message: 'All users',

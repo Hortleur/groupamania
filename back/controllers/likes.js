@@ -4,11 +4,8 @@ const createHttpError = require('http-errors')
 
 exports.addLike = async(req, res, next) => {
     try {
-        const {
-            postId,
-        } = req.body
-        const userId = req.user.payload.id
-        
+        const {userId,
+         postId} = req.body       
         const addLike = await prisma.likes.create({
             data:{
                 user:{

@@ -22,6 +22,11 @@ const routes = [
     path: '/Post/:id',
     name: 'PostPage',
     component: () => import('../components/PostPage.vue')
+  },
+  {
+    path:'/Admin',
+    name:'Admin',
+    component: () => import('../views/Admin.vue')
   }
 ]
 

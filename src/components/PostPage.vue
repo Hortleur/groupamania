@@ -125,15 +125,15 @@
                         this.loading = !this.loading
                         this.commentaires = this.postItem.Commentaire
                     })
+                    .catch((error) => {
+                        return error
+                    })
             },
             sendComment() {
                 instance.post('/createComment', {
                         comment: this.comment,
-
                         userId: this.userId,
-
                         postId: Number(this.postId)
-
                     })
                     .then((res) => {
                         return res
@@ -142,20 +142,19 @@
                         return error
                     })
             },
-            onLike(){
-                if (this.isLiked === false) {
-                    instance.post('/like', {
-                        userId: this.userId,
-                        postId: JSON.parse(this.postId)
-                    })
-                    .then((res) => {
-                        return res    
-                    })
-                    .catch((error) => {
-                        return error
-                    })
-                    this.getPostItem()
-                }          
+            onLike(){ 
+                instance.post('/like', {
+                     postId: Number(this.postId), 
+                     userId: this.userId
+                })
+                .then((res) => {
+                    return res    
+                })
+                .catch((error) => {
+                    return error
+                })
+                console.log(this.postId)
+                this.getPostItem()        
             },
             userLiked(){
                 instance.get('/like/isLike')
