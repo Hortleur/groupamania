@@ -11,8 +11,8 @@ exports.createPost = async(req, res, next) => {
             title,
             content,
             imageAltText,
-            userId
         } = JSON.parse(req.body.formContent)
+        const userId = req.user.payload.id
         const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
         const post = await prisma.post.create({
             data:{
@@ -42,7 +42,11 @@ exports.allPost = async(req, res, next) => {
                 createdAt: 'desc'
             },
             include:{
-                user: true,
+                user:{
+                    include:{
+                        profile: true
+                    }
+                },
                 Commentaire: true,
                 Likes: true
             }
@@ -69,6 +73,13 @@ exports.onePost = async(req, res, next) => {
             Commentaire:{
                 orderBy: {
                     createdAt: 'desc'
+                },
+                include:{
+                    user:{
+                        include:{
+                            profile:true
+                        }
+                    }
                 }
             },
             Likes: true
@@ -87,13 +98,16 @@ exports.onePost = async(req, res, next) => {
 exports.deletePost = async(req, res, next) => {
     try {
         const {id} = req.params
+        
     const post = await prisma.post.delete({
         where: {
             id: Number(id)
         } 
     })
-        const filename = image.imageUrl.split('/image/')[1]
-        fs.unlink(`image/${filename}`, () => {
+        const image = req.body
+        const filename = String(image).split('/image/')[1]
+        console.log(filename)
+        fs.unlinkSync(`image/${filename}`, () => {
             res.status(200).json({
                 status : true,
                 message: 'Post bien supprimer',

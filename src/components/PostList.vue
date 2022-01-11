@@ -1,6 +1,6 @@
 <template>
     <div v-if="error">{{error}}</div>
-    <div v-else v-for="post in allPosts" :key="post.id"
+    <div v-else v-for="post in posts" :key="post.id"
         class="posts flex flex-row flex-nowrap flex-shrink-0 flex-grow-0 bg-pink-100 my-10 rounded-2xl mx-auto w-1/3">
         <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
             <div class="likes mx-4">
@@ -10,8 +10,9 @@
         </div>
         <div class=" w-full">
             <div>
-                <div class="title border-b-4 border-orangeGroupo my-3 flex content-center justify-start pl-2">
+                <div class="title border-b-4 border-orangeGroupo my-3 flex content-center justify-between p-2">
                     <h2 class=" text-2xl font-bold">{{post.title}}</h2>
+                    <i @click="deletePost(post.id, post.image)" class="fas fa-trash self-center text-red-600" v-if=" isAdmin === 1 || userId == post.user.id"></i>
                 </div>
             </div>
             <div>
@@ -26,9 +27,9 @@
             </div>
 
             <div class="postFooter flex flex-row flex-nowrap justify-between p-4">
-                <div class="userName">
-                    <span>
-                        <!--Ajouter photo de profil-->{{post.user.name}}</span>
+                <div class="userName flex flex-row">                    
+                    <img :src="post.user.profile.image" alt="photo de profile" class=" w-9 h-9 object-cover rounded-full">
+                    <span>{{post.user.name}}</span>
                 </div>
                 <div class="comments">
                     <router-link :to="'/Post/' + post.id">
@@ -44,21 +45,56 @@
 </template>
 
 <script>
-    import {
-        mapGetters,
-        mapActions
-    } from "vuex";
+    import axios from "axios"
+    const instance = axios.create({
+        baseURL: "http://localhost:3000/api",
+        headers: {
+            "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+        }
+    })
+    let gpc = localStorage.getItem('gpc')
+    const admin = JSON.parse(gpc).isAdmin
+    const UserId = JSON.parse(gpc).id
     export default {
         name: "Post",
-        computed: mapGetters(['allPosts']),
+        data() {
+            return {
+                userId : UserId,
+                isAdmin: admin,
+                posts: []
+            }
+        },
+        computed: {
+
+        } ,
         components: {
 
         },
         methods: {
-            ...mapActions(['fetchPosts'])
+            getPosts(){
+                instance.get('/post')
+                .then((res) => {
+                    console.log(res.data.data)
+                    this.posts = res.data.data
+                    console.log(this.posts)
+                })
+                .catch((error) => {
+                    return error
+                })
+            },
+            deletePost(id, image){
+                instance.delete(`/post/delete/${id}`, image)
+                .then((res) => {
+                    this.posts = this.posts.filter(item => item.id !== id)
+                     return res
+                })
+                .catch((error) => {
+                    return error
+                })
+            }
         },
         created() {
-            this.fetchPosts()
+            this.getPosts()
         }
     }
 </script>

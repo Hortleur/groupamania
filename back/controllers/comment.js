@@ -8,8 +8,8 @@ exports.createComment = async(req, res, next) => {
     try {
         const {comment,
                postId,
-               userId
                 } = req.body
+        const userId = req.user.payload.id
     const commentaire = await prisma.commentaire.create({
         data:{
             comment,

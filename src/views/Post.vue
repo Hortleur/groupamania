@@ -12,7 +12,7 @@
                     <i class="fas fa-plus-circle text-orangeGroupo text-3xl mx-8"></i>
                 </button>
                 <router-link to="/Admin">
-                    <i class="fas fa-users-cog text-orangeGroupo text-3xl " v-if="admin"></i>
+                    <i class="fas fa-users-cog text-orangeGroupo text-3xl " v-show="admin"></i>
                 </router-link>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <button @click="toggleModal = !toggleModal"> 
                     <i class="fas fa-times-circle text-4xl text-orangeGroupo"></i>
                 </button>
-                <PostForm />
+                <PostForm  @changement=" logChangement"/>
             </div>
         </div>
         <div v-if="toggleModal" class=" absolute inset-0 z-40 opacity-90 bg-black">
@@ -47,14 +47,20 @@
     import PostList from "../components/PostList.vue";
     import Footer from "../components/Footer.vue";
     import PostForm from "../components/PostForm.vue";
+    let gpc = localStorage.getItem('gpc')
+    const token = JSON.parse(gpc).token
+    const axios = require('axios')
+    
     
 
     export default {
+        
         name: 'Post',
         data(){
             return{
                 toggleModal: false,
-                admin:false
+                admin:false,
+                Posts:[]
             }
         },
         components: {
@@ -64,13 +70,45 @@
             PostForm
         },
         methods: {
+
             isAdmin(){
                 const gpc = localStorage.getItem('gpc')
                 const gpcAdmin = JSON.parse(gpc).isAdmin
                 if(gpcAdmin > 0){
                     this.admin = !this.admin
                 }
-            }
+            },
+
+            logChangement(event){
+                console.log(event.image )
+                const instance = axios.create({
+                baseURL: "http://localhost:3000/api",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            }, 
+            })
+                let fd = new FormData()
+                fd.append('image', event.image)
+                const formContent = {
+                    title : event.title,
+                    content : event.content,
+                    imageAltText : event.imageAltText,
+                }
+                fd.append('formContent', JSON.stringify(formContent))
+                
+            instance.post('/createPost', fd)
+            .then((res) => {
+                this.toggleModal = !this.toggleModal
+                this.$root.$emit('newPost', res)
+                return res
+            })
+            .catch((error) => {
+                return error
+            })
+            },
+            
+
         },
         created(){
             this.isAdmin()

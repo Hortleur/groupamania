@@ -11,7 +11,9 @@ router.post('/login', user.login)
 //read
 router.get('/user', auth, user.all)
 
-router.get('/user/profile', auth, user.oneUser)
+router.get('/user/profile', auth, user.oneUserProfile)
+
+router.get('/user/profile/:id', auth, user.oneUser)
 
 //delete
 router.delete('/user/delete', auth, user.deleteUser)

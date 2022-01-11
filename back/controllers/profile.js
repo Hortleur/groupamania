@@ -1,5 +1,5 @@
 const {
-    PrismaClient, Prisma
+    PrismaClient
 } = require('@prisma/client');
 const prisma = new PrismaClient();
 const createHttpError = require('http-errors')
@@ -33,7 +33,7 @@ exports.createProfile = async (req, res, next) => {
 
 exports.getProfile = async (req, res, next) => {
     try {
-        const {id} = req.params
+        const {id} = req.user.payload.id
         const profile = await prisma.profile.findUnique({
             where: {
                 userId: Number(id)
@@ -51,13 +51,13 @@ exports.getProfile = async (req, res, next) => {
 
 exports.editProfile = async (req, res, next) => {
     try {
-        const {id} = req.params
+        const id = req.user.payload.id
     const {
         bio,
      } = JSON.parse(req.body.formContent)
      const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
     const profile = await prisma.profile.update({
-        where: {id},
+        where: {id : id},
         data : {
             bio,
             image,

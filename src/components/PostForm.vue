@@ -21,9 +21,9 @@
 
 <script>
 let gpc = localStorage.getItem('gpc')
-const token = JSON.parse(gpc).token
+//const token = JSON.parse(gpc).token
 const UserId= JSON.parse(gpc).id
-const axios = require('axios')
+//const axios = require('axios')
 
 export default {
     name:'PostForm',
@@ -41,16 +41,6 @@ export default {
            this.selectedFile = event.target.files[0]
         },
         onPost(){
-            const instance = axios.create({
-                baseURL: "http://localhost:3000/api",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "multipart/form-data"
-            }, 
-            })
-            let fd = new FormData();
-            fd.append('image',this.selectedFile)
-            
             const formContent = {
                 title: this.title,
                 content: this.content,
@@ -58,11 +48,7 @@ export default {
                 imageAltText: this.imageAltText,
                 userId: this.userId,
             }
-            fd.append('formContent', JSON.stringify(formContent))
-            instance.post('/createPost', fd)
-            .then(res => {
-                return res.json()
-            })
+            this.$emit('changement', formContent)
         }
     }
 }
