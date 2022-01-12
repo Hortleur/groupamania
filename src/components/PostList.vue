@@ -1,10 +1,15 @@
 <template>
     <div v-if="error">{{error}}</div>
     <div v-else v-for="post in posts" :key="post.id"
-        class="posts flex flex-row flex-nowrap flex-shrink-0 flex-grow-0 bg-pink-100 my-10 rounded-2xl mx-auto w-1/3">
+        class="posts flex flex-row flex-nowrap bg-pink-100 my-10 rounded-2xl sm:mx-4">
         <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
-            <div class="likes mx-4">
-                <i class="fas fa-heart"></i>
+            <div class="likes sm:mx-2">
+                <div v-if="isLiked">
+                    <i @click="onDislike" class="fas fa-heart text-red-700 cursor-pointer text-2xl"></i>
+                </div>
+                <div v-else>
+                    <i @click="onLike(post.id)" class="fas fa-heart cursor-pointer text-2xl"></i>
+                </div>
                 <span>{{post.Likes.length}}</span>
             </div>
         </div>
@@ -61,11 +66,17 @@
             return {
                 userId : UserId,
                 isAdmin: admin,
-                posts: []
+                posts: [],
+                newPost: null,
+                isLiked: false,
+                postId: ''
+                
             }
         },
-        computed: {
-
+        watch: {
+            posts(){
+                return this.posts
+            }
         } ,
         components: {
 
@@ -74,9 +85,7 @@
             getPosts(){
                 instance.get('/post')
                 .then((res) => {
-                    console.log(res.data.data)
                     this.posts = res.data.data
-                    console.log(this.posts)
                 })
                 .catch((error) => {
                     return error
@@ -91,10 +100,52 @@
                 .catch((error) => {
                     return error
                 })
-            }
+            },
+            onLike(id){ 
+                instance.post('/like', {
+                    id : Number(id)
+                })
+                .then((res) => {
+                    console.log(res) 
+                    this.userLiked(res)
+                   return res
+                    
+                })
+                .catch((error) => {
+                    return error
+                })    
+                   
+            },
+            userLiked(){
+                instance.get('/like/isLike')
+                .then((res) => {
+                    if(res.data.data != null){
+                        this.isLiked = !this.isLiked  
+                    }else{
+                        this.isLiked = false
+                    }
+                    this.getPostItem()
+                })
+                .catch((error) => {
+                    return error
+                })
+                
+            },
+            onDislike(){
+                instance.delete('/like/deletelike')
+                .then((res) => {
+                    this.userLiked()
+                    return res
+                })
+                .catch((error) => {
+                    return error
+                })
+                
+            },
         },
         created() {
             this.getPosts()
+            this.userLiked() 
         }
     }
 </script>

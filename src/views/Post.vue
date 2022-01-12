@@ -25,7 +25,7 @@
                 <PostForm  @changement=" logChangement"/>
             </div>
         </div>
-        <div v-if="toggleModal" class=" absolute inset-0 z-40 opacity-90 bg-black">
+        <div v-if="toggleModal" class=" absolute inset-0 z-40 opacity-90 bg-black sm:fixed">
             
         </div>
         <div class=" mx-auto sm:flex sm:flex-row-reverse sm:flex-nowrap my-8 sm:justify-around">

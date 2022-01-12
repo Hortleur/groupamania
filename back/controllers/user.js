@@ -76,13 +76,13 @@ exports.oneUserProfile = async (req, res, next) => {
 }
 exports.oneUser = async (req, res, next) => {
     try{
-        const id = req.params
+        const id = req.user.payload.id
     const oneUser = await prisma.user.findUnique({
         where: {
             id: Number(id)
         },
         include:{
-            profile: true
+            Likes: true
         }
     })
         res.status(200).json({

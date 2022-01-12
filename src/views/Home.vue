@@ -6,7 +6,7 @@
       Bienvenue sur le réseau de Groupomania
     </h1>
   </div>
-  <div class="login">
+  <div class="login mx-auto">
     <Login />
   </div>
   <Footer />

@@ -30,9 +30,11 @@ exports.addLike = async(req, res, next) => {
 exports.isLike = async(req, res, next) => {
     try {
         const id = req.user.payload.id
+        const postId = req.payload.id
         const userLiked = await prisma.likes.findUnique({
             where: {
-                userId: Number(id)
+                userId: Number(id),
+                postId: Number(postId)
             }
         })
             res.status(200).json({
@@ -47,11 +49,9 @@ exports.isLike = async(req, res, next) => {
 
 exports.deleteLike = async(req, res, next) => {
     try {
-        const id = req.user.payload.id
+        let id = JSON.stringify(req.params)
         const deletelike = await prisma.likes.delete({
-            where: {
-                userId: Number(id) 
-            }
+            where: {id: Number(id.split(':')[1].slice(1,3))}
         })
             res.status(200).json({
                 status: true,

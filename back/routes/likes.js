@@ -11,7 +11,7 @@ router.post('/like', auth, likes.addLike)
 router.get('/like/isLike', auth, likes.isLike)
 
 //delete
-router.delete('/like/deletelike', auth, likes.deleteLike)
+router.delete('/like/deletelike/:id', auth, likes.deleteLike)
 
 
 module.exports = router

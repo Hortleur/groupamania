@@ -69,7 +69,11 @@ exports.onePost = async(req, res, next) => {
             id: Number(id)
         }, 
         include:{
-            user: true,
+            user: {
+                include:{
+                    profile: true
+                }
+            },
             Commentaire:{
                 orderBy: {
                     createdAt: 'desc'

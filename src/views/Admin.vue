@@ -1,5 +1,5 @@
 <template>
-    <div class=" flex flex-col flex-nowrap h-screen justify-between text-white" v-if="admin === 1">
+    <div class="flex flex-col flex-nowrap h-screen justify-between text-white" v-if="admin === 1">
         <router-link to="/Post">
             <div>
                 <Header />
@@ -8,7 +8,7 @@
         <div>
             <h1 class=" text-4xl">Bienvenue {{user}}, sur la page Admin de Groupomania</h1>
         </div>
-        <div class=" w-6/12 mx-auto my-4 text-black">
+        <div class=" sm:w-auto sm:mx-auto md:w-1/2 md:mx-auto my-4 text-black">
             <div>
                 <h2 class="rounded mb-4 text-3xl font-bold text-orangeGroupo">Les Utilisateurs</h2>
                 <form action="">
@@ -16,27 +16,30 @@
                         <option v-for="(user, userId) in users" :key="userId" :value="user.id" class=" w-">{{user.name}}</option>
                     </select>
                 </form>
-                <div v-if="selected" class=" flex flex-row flex-nowrap justify-between">
-                    <div class=" bg-orange-300 p-3 rounded-xl overflow-auto">
+                <div v-if="selected" class=" sm:flex-col sm:my-6  md:flex-col mt-6 flex justify-around">
+                    
+                    <div class=" bg-orange-300 p-3 rounded-xl sm:mb-6 md:mb-6">
+                        <h2 class=" font-bold text-green-600 text-2xl">PROFILE</h2>
+                        <div class=" bg-pink-100 rounded-xl my-4">
+                            <h3>{{selectedUser.name}}</h3>
+                            <img v-if="selectedUser.profile.image" :src="selectedUser.profile.image" alt="Photo de profile" width="320" class=" h-80 object-cover mx-auto">
+                            <img v-else src="../assets/default.jpg" alt="photo de profil par defaut" width="320" class=" h-80 object-cover mx-auto">
+                            <p class=" my-3">Bio: {{selectedUser.profile.bio}}</p>
+                        </div>
+                        <button class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer l'utilisateur</button>
+                    </div> 
+                    
+                    <div class=" bg-orange-300 p-3 rounded-xl">
                         <h2 class=" font-bold text-green-600 text-2xl">POSTS</h2>
                         <div v-for="(post, postId) in selectedUser.posts" :key="postId">
-                            <div class=" bg-pink-100 rounded-xl my-4">
+                            <div class=" bg-pink-100 rounded-xl my-4 w-80 sm:mx-auto md:mx-auto">
                                 <h3>{{post.title}}</h3>
-                                <img :src="post.image" :alt="post.imageAltText" width="300" class=" mx-auto h-80 object-cover">
-                                <p>{{post.content}}</p>
-                                <button class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer post</button>
+                                <img v-if="post.image" :src="post.image" :alt="post.imageAltText" width="320"  class=" h-80 object-contain">
+                                <p v-if="post.content">{{post.content}}</p>
+                                <button @click="supprPost(post.id)" class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer post</button>
                             </div> 
                         </div>
                     </div>   
-                    <div class=" bg-orange-300 p-3 rounded-xl">
-                    <h2 class=" font-bold text-green-600 text-2xl">PROFILE</h2>
-                    <div class=" bg-pink-100 rounded-xl my-4">
-                        <h3>{{selectedUser.name}}</h3>
-                        <img :src="selectedUser.profile.image" alt="Photo de profile" width="300" class=" mx-auto h-80 object-cover">
-                        <p class=" my-3">Bio: {{selectedUser.profile.bio}}</p>
-                    </div>
-                    <button class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer l'utilisateur</button>
-                </div>  
                 </div>
             </div>
         </div>
@@ -83,15 +86,15 @@
 
         },
         methods: {
-            async getUsers() {
-                await instance.get('/user')
-                    .then((res) => {
-                        this.users = res.data.data
-                        this.userProfile = res.data.data[this.selected].profile
-                    })
-                    .catch((error) => {
-                        return error
-                    })
+            getUsers() {
+                instance.get('/user')
+                .then((res) => {
+                    this.users = res.data.data
+                    this.userProfile = res.data.data[this.selected].profile
+                })
+                .catch((error) => {
+                    return error
+                })
             },
             displayPosts(){
                 this.isClosed = !this.isClosed
@@ -101,10 +104,19 @@
             },
             userChange(event){
                 this.selectedUser = this.users.find(user => user.id === Number(event.target.value))
-                console.log(this.selectedUser)
             },
             backToPost(){
                 this.$router.push('/Post')
+            },
+            supprPost(id){
+                console.log(id)
+                instance.delete(`/post/delete/${id}`)
+                .then((res) => {
+                    console.log(res)
+                })
+                .catch((error) =>{
+                    return error
+                })
             }
         },
         computed: {

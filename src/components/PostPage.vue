@@ -12,7 +12,7 @@
             <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
                 <div class="likes mx-4">
                     <div v-if="isLiked">
-                        <i @click="onDislike" class="fas fa-heart text-red-700 cursor-pointer text-2xl"></i>
+                        <i @click="onDislike()" class="fas fa-heart text-red-700 cursor-pointer text-2xl"></i>
                     </div>
                     <div v-else>
                         <i @click="onLike" class="fas fa-heart cursor-pointer text-2xl"></i>
@@ -29,8 +29,10 @@
                 </div>
                 <div>
                     <div class="content">
-                        <div v-if="postItem.image" class="image mx-auto p-6 border-b-4 border-orangeGroupo">
-                            <img :src="postItem.image" :alt="postItem.imageAltText" loading="lazy">
+                        <div v-if="postItem.image" class="image mx-auto p-6 border-b-4 border-orangeGroupo ">
+                            <div class=" mx-auto w-1/2">
+                                <img :src="postItem.image" :alt="postItem.imageAltText" loading="lazy" class=" object-cover">
+                            </div>
                         </div>
                         <div v-if="postItem.content" class=" border-b-4 border-orangeGroupo p-3">
                             {{postItem.content}}
@@ -39,7 +41,8 @@
                 </div>
 
                 <div class="postFooter flex flex-row flex-nowrap justify-between p-4">
-                    <div class="userName">
+                    <div class="userName flex flex-row">
+                        <img :src="postItem.user.profile.image" alt="photo de profile" class=" w-9 h-9 object-cover rounded-full">
                         <span>
                             <!--Ajouter photo de profil-->{{postItem.user.name}}</span>
                     </div>
@@ -121,7 +124,8 @@
                 comment: '',
                 userId: UserId,
                 postId: '',
-                isAdmin: admin
+                isAdmin: admin,
+                Likes: ''
             }
         },
         methods: {
@@ -132,13 +136,14 @@
                         this.loading = !this.loading
                         this.commentaires = this.postItem.Commentaire
                         this.postId = this.postItem.id
+                        console.log(this.postItem)
                     })
                     .catch((error) => {
                         return error
                     })
             },
-            async sendComment() {
-                await instance.post('/createComment', {
+            sendComment() {
+                instance.post('/createComment', {
                         comment: this.comment,
                         postId: Number(this.postId)
                     })
@@ -156,40 +161,46 @@
                 })
                 .then((res) => {
                     console.log(res) 
-                    this.userLiked(res)
                    return res
                     
                 })
                 .catch((error) => {
                     return error
                 })    
-                   
+            this.userLiked()      
             },
             userLiked(){
-                instance.get('/like/isLike')
-                .then((res) => {
-                    if(res.data.data != null){
-                        this.isLiked = !this.isLiked  
-                    }else{
-                        this.isLiked = false
+
+            instance.get('/user/likes')
+            .then((res) => {
+                const likes = res.data.data.Likes
+                for (const like of likes) {
+                    if(like.postId === Number(this.id) && like.userId === this.userId){
+                        this.isLiked = !this.isLiked
                     }
-                    this.getPostItem()
-                })
-                .catch((error) => {
-                    return error
-                })
+                }
+                this.loading = !this.loading
                 
+                return this.Likes = res.data.data.Likes
+            })
+            .catch((error) => {
+                return error
+            })
+            this.getPostItem()
+
             },
             onDislike(){
-                instance.delete('/like/deletelike')
+                const likeId = this.Likes.find(item => item.postId == this.id).id
+                instance.delete(`/like/deletelike/${JSON.stringify(likeId)}`)
                 .then((res) => {
+                    
                     this.userLiked()
                     return res
                 })
                 .catch((error) => {
                     return error
-                })
-                
+                }) 
+            this.userLiked()
             },
             deleteComment(id){
                 instance.delete(`/comment/delete/${id}`)
@@ -203,7 +214,8 @@
             },
         },
         created() {
-            this.userLiked() 
+            this.userLiked()
+            this.getPostItem() 
         }
     }
 </script>

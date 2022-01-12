@@ -1,17 +1,16 @@
 <template>
     <div class="flex flex-col justify-between h-screen">
-        <div>
-            <div
-                class=" flex flex-col justify-center items-center md:flex-row md:justify-between md:items-center md:mx-24">
-                <router-link to="/Post">
-                    <Header />
-                </router-link>
-                <router-link to="/">
-                    <button @click="logOut"
-                        class=" bg-pink-100 p-4 rounded-tl-xl rounded-br-xl font-semibold hover:bg-pink-500">DECONNEXION</button>
-                </router-link>
-            </div>
+        <div class=" sm:mb-4 md:flex-row md:justify-between md:items-center md:mx-24">
+            <router-link to="/Post">
+                <Header />
+            </router-link>
+            <router-link to="/">
+                <button @click="logOut"
+                    class=" bg-pink-100 p-4 rounded-tl-xl rounded-br-xl font-semibold hover:bg-pink-500">DECONNEXION
+                </button>
+            </router-link>
         </div>
+
         <div v-if="!profileTrue" class=" border-pink-100 border-2">
             <div>
                 <button @click="openModal = !openModal" class=" bg-pink-100 my-4 p-3 rounded">Créer son profile</button>
@@ -29,7 +28,7 @@
             </div>
         </div>
         <div v-else>
-            <div class=" bg-white w-1/3 mx-auto rounded-xl p-3">
+            <div class=" bg-white w-1/3 mx-auto rounded-xl p-3 sm:w-screen sm:p-4">
                 <div class=" flex flex-row flex-nowrap items-center">
                     <div class=" w-28 relative top-1.5">
                         <img v-if="profile.image" :src="profile.image" alt="Photo de Profile"
@@ -50,17 +49,19 @@
                 </div>
                 <div class=" flex flex-row justify-evenly mt-3">
                     <button @click="deleteAccount"
-                        class=" bg-gray-500 p-3 rounded-lg text-white font-bold hover:text-black hover:bg-red-700">Supprimer
-                        mon compte</button>
+                        class=" bg-gray-500 p-3 rounded-lg text-white font-bold hover:text-black hover:bg-red-700 sm:mr-3">Supprimer
+                        mon compte
+                    </button>
                     <button class=" bg-gray-500 p-3 rounded-lg text-white font-bold hover:text-black hover:bg-green-500"
-                        @click="update">Modifier mon profile</button>
+                        @click="update">Modifier mon profile
+                    </button>
                     <div v-if="openUpdateModal"
                         class=" fixed z-50 overflow-x-hidden overflow-y-auto inset-0 flex justify-center items-center ">
                         <div class=" relative mx-auto w-auto">
                             <button @click="openUpdateModal = !openUpdateModal && getProfile()">
                                 <i class="fas fa-times-circle text-4xl text-orangeGroupo"></i>
                             </button>
-                            <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl">
+                            <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl ">
                                 <div class="my-4">
                                     <label for="bio"> bio:</label>
                                     <textarea v-model="bio" name="bio" id="bio" cols="30" rows="5"
@@ -78,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="openUpdateModal" class=" absolute inset-0 z-40 opacity-90 bg-white">
+                <div v-if="openUpdateModal" class=" absolute inset-0 z-40 opacity-90 bg-white sm:fixed">
                 </div>
             </div>
         </div>
