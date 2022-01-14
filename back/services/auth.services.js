@@ -9,7 +9,7 @@ const jwt = require('../utils/jwt');
 const createHttpError = require('http-errors');
 
 // User
-exports.signup = async (req, res) => {
+exports.signup = async (req) => {
 
     const hash = bcrypt.hashSync(req.body.password, 10)
     const {
@@ -31,7 +31,7 @@ exports.signup = async (req, res) => {
     return user;
 }
 
-exports.login = async (req, res) => {
+exports.login = async (req) => {
     const {
         email,
         password
@@ -48,6 +48,7 @@ exports.login = async (req, res) => {
     if (!checkPassword) throw createHttpError.Unauthorized('Email ou Mot de Passe invalide')
     delete user.password
     const token = await jwt.signAccessToken(user)
+    console.log(user, token)
     return {
         ...user,
         token

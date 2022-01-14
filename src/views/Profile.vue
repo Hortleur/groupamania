@@ -93,15 +93,8 @@
     import Header from "../components/Header.vue";
     import Footer from "../components/Footer.vue";
     import ProfileForm from "../components/ProfileForm.vue";
-    let gpc = localStorage.getItem('gpc')
-    const UserId = JSON.parse(gpc).id
     import axios from "axios";
-    const instance = axios.create({
-        baseURL: "http://localhost:3000/api",
-        headers: {
-            "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
-        }
-    })
+    
     export default {
         name: 'Profile',
 
@@ -113,7 +106,7 @@
         data() {
             return {
                 openModal: false,
-                userId: UserId,
+                userId: JSON.parse(localStorage.getItem('gpc')).id,
                 profileTrue: false,
                 profile: '',
                 user: '',
@@ -127,6 +120,12 @@
                 localStorage.clear()
             },
             getProfile() {
+                const instance = axios.create({
+                    baseURL: "http://localhost:3000/api",
+                    headers: {
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+                    }
+                })
                 instance.get('/user/Profile')
                     .then((res) => {
                         let profileData = res.data.data.profile
@@ -136,19 +135,23 @@
                             this.profile = profileData
                             this.user = userData
                         }
-
                     })
                     .catch((error) => {
                         return error
                     })
             },
             deleteAccount() {
+                            const instance = axios.create({
+                    baseURL: "http://localhost:3000/api",
+                    headers: {
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+                    }
+                })
                 instance.delete('/user/delete', {
                         id: this.userId
                     })
                     .then((res) => {
                         return res
-
                     })
                     .catch((error) => {
                         return error
@@ -161,6 +164,12 @@
                 this.openUpdateModal = !this.openUpdateModal
             },
             updateProfile(){
+                            const instance = axios.create({
+                    baseURL: "http://localhost:3000/api",
+                    headers: {
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+                    }
+                })
                 let fd = new FormData()
                 fd.append('image', this.selectedFile)
                 const formContent = {
@@ -175,8 +184,7 @@
                 })
                 .catch((error) => {
                     return error
-                })
-                
+                }) 
             }
         },
         created() {

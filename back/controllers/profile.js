@@ -33,6 +33,7 @@ exports.createProfile = async (req, res, next) => {
 
 exports.getProfile = async (req, res, next) => {
     try {
+        console.log(req)
         const {id} = req.user.payload.id
         const profile = await prisma.profile.findUnique({
             where: {

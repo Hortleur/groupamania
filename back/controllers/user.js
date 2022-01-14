@@ -67,7 +67,7 @@ exports.oneUserProfile = async (req, res, next) => {
     })
         res.status(200).json({
             status: true,
-            message: 'One user',
+            message: 'One user pROFILE',
             data: oneUser
         })
     } catch(e){

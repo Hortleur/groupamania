@@ -27,6 +27,11 @@ const routes = [
     path:'/Admin',
     name:'Admin',
     component: () => import('../views/Admin.vue')
+  },
+  {
+    path:'/:catchAll(.*)',
+    redirect: {name: 'Post'}
+
   }
 ]
 

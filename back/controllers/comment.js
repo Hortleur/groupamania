@@ -14,7 +14,7 @@ exports.createComment = async(req, res, next) => {
         data:{
             comment,
             user:{
-                connect: {id : userId}
+                connect: {id : userId},
             },
             post:{
                 connect:{id: postId}

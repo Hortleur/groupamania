@@ -8,11 +8,11 @@
         <div v-if="loading" class=" mx-auto">
             <img src="@/assets/loader.png" alt="loader">
         </div>
-        <div v-else class=" flex flex-row w-1/2 bg-white mx-auto border-2 rounded-2xl">
+        <div v-else class=" flex flex-row md:w-3/4 lg:w-3/4 xl:w-1/2 bg-white lg:mx-auto xl:mx-auto md:mx-auto border-2 rounded-2xl sm:w-screen">
             <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
                 <div class="likes mx-4">
                     <div v-if="isLiked">
-                        <i @click="onDislike()" class="fas fa-heart text-red-700 cursor-pointer text-2xl"></i>
+                        <i @click="onDislike(postItem.id)" class="fas fa-heart text-red-700 cursor-pointer text-2xl"></i>
                     </div>
                     <div v-else>
                         <i @click="onLike" class="fas fa-heart cursor-pointer text-2xl"></i>
@@ -40,39 +40,38 @@
                     </div>
                 </div>
 
-                <div class="postFooter flex flex-row flex-nowrap justify-between p-4">
+                <div class="postFooter flex flex-row sm:flex-col sm:items-center flex-nowrap justify-between p-4">
                     <div class="userName flex flex-row">
                         <img :src="postItem.user.profile.image" alt="photo de profile" class=" w-9 h-9 object-cover rounded-full">
-                        <span>
-                            <!--Ajouter photo de profil-->{{postItem.user.name}}</span>
+                        <span>{{postItem.user.name}}</span>
                     </div>
                     <div class="comments">
                         <div>
-                            <p class=" hover:text-green-600">commentaire(s) : {{commentaires.length}}
-                                commentaire(s)
+                            <p class=" hover:text-green-600">{{commentaires.length}}
+                                commentaire<span v-if="commentaires.length > 1">s</span>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="commentaires">
-                    <div class=" border-orangeGroupo border-t-4 border-b-4 py-4">
+                    <div class=" border-orangeGroupo border-t-4 py-4">
                         <form class=" flex justify-center">
                             <textarea v-model="comment" cols="30" rows="5"
-                                class=" border-black border-2 p-2"></textarea>
+                                class=" border-black border-2 p-2 sm:w-1/2"></textarea>
                             <button @click="sendComment"
                                 class=" bg-gray-500 p-4 rounded-r-lg hover:bg-green-600 font-bold">Commenter</button>
                         </form>
                     </div>
-                    <div v-for="comments in commentaires" :key="comments.id" class=" flex flex-row flex-nowrap justify-center my-3">
+                    <div v-for="comments in commentaires" :key="comments.id" class=" flex flex-row flex-nowrap justify-center my-3 border-t-2 border-orangeGroupo pt-2">
                         <div class=" flex flex-col justify-center p-3 bg-orange-400 rounded-bl-lg">
-                            <img v-if="comments.user.profile !== null" :src="comments.user.profile.image" alt="photo de profile" class=" w-9 h-9 rounded-full object-cover">
+                            <img v-if="comments.user.profile.image !== null" :src="comments.user.profile.image" alt="photo de profile" class=" w-9 h-9 rounded-full object-cover">
                             <img v-else src="../assets/default.jpg" alt="photo de profil par defaut" class=" w-9 h-9 rounded-full object-cover">
                             <p>{{comments.user.name}}</p>
                         </div>
                         <div class="bg-orange-400 p-3 rounded-r-lg">
                             <div class=" flex flex-row flex-nowrap justify-between">                                
                                 <div class=" flex flex-row flex-nowrap justify-evenly">
-                                    <p> {{comments.createdAt}}</p> 
+                                    <p> {{new Date(comments.createdAt).toLocaleString('fr')}}</p> 
                                 </div>
                                 <div v-if=" isAdmin === 1 || userId == comments.userId">
                                     <i @click="deleteComment(comments.id)" class="fas fa-times text-red-700 ml-4 cursor-pointer"></i>
@@ -82,7 +81,6 @@
                                 <p>{{ comments.comment }}</p>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -125,7 +123,7 @@
                 userId: UserId,
                 postId: '',
                 isAdmin: admin,
-                Likes: ''
+                Likes: []
             }
         },
         methods: {
@@ -133,10 +131,10 @@
                 instance.get('/post/onePost/' + this.id)
                     .then((data) => {
                         this.postItem = data.data.data
-                        this.loading = !this.loading
+                        this.loading = false
                         this.commentaires = this.postItem.Commentaire
                         this.postId = this.postItem.id
-                        console.log(this.postItem)
+                        this.userLiked()
                     })
                     .catch((error) => {
                         return error
@@ -148,7 +146,8 @@
                         postId: Number(this.postId)
                     })
                     .then((res) => {
-                        this.commentaires.unshift(res.data.data)
+                        this.getPostItem()
+                        return res
                     })
                     .catch((error) => {
                         return error
@@ -160,7 +159,7 @@
                     id : Number(id)
                 })
                 .then((res) => {
-                    console.log(res) 
+                    this.getPostItem()
                    return res
                     
                 })
@@ -170,42 +169,38 @@
             this.userLiked()      
             },
             userLiked(){
-
             instance.get('/user/likes')
-            .then((res) => {
-                const likes = res.data.data.Likes
-                for (const like of likes) {
-                    if(like.postId === Number(this.id) && like.userId === this.userId){
-                        this.isLiked = !this.isLiked
-                    }
-                }
-                this.loading = !this.loading
-                
-                return this.Likes = res.data.data.Likes
-            })
-            .catch((error) => {
-                return error
-            })
-            this.getPostItem()
-
-            },
-            onDislike(){
-                const likeId = this.Likes.find(item => item.postId == this.id).id
-                instance.delete(`/like/deletelike/${JSON.stringify(likeId)}`)
                 .then((res) => {
-                    
+                    const likes = res.data.data.Likes
+                    for (const like of likes) {
+                        if(like.postId == this.id && like.userId == this.userId){
+                            return this.isLiked = !this.isLiked
+                        }
+                    }
+                    return this.Likes = res.data.data.Likes
+                })
+                .catch((error) => {
+                    return error
+                })
+            },
+            onDislike(id){
+                const likeId = this.Likes.find(item => item.postId == id).id
+                console.log(likeId)
+                instance.delete(`/like/deletelike/${likeId}`)
+                .then((res) => {                    
+                    this.getPostItem()
                     this.userLiked()
                     return res
                 })
                 .catch((error) => {
                     return error
                 }) 
-            this.userLiked()
+                
             },
             deleteComment(id){
                 instance.delete(`/comment/delete/${id}`)
                 .then((res) => {
-                    this.commentaires = this.commentaires.filter(item => item.id !== id)
+                    this.getPostItem()
                     return res 
                 })
                 .catch((error) => {
@@ -214,8 +209,7 @@
             },
         },
         created() {
-            this.userLiked()
-            this.getPostItem() 
+            this.getPostItem()
         }
     }
 </script>
