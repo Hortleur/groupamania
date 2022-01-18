@@ -26,14 +26,14 @@ model Post {
 
 model Profile {
   id      Int    @id @default(autoincrement())
-  image String
-  bio     String?
+  image   String?   
+  bio     String? 
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  Int    @unique 
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   email       String        @unique
   name        String?
   password    String

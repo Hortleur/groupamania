@@ -31,6 +31,7 @@
 </template>
 
 <script>
+//import axios from "axios";
 import { mapState } from "vuex";
 import useValidate from "@vuelidate/core"
 import { required, alphaNum, alpha, email} from '@vuelidate/validators'
@@ -43,15 +44,13 @@ export default {
             mode: 'login',
             email: '',
             prenom: '',
-            password: ''
+            password: '',
         }
     },
-    validations(){
-        return {
+    validations:{  
             email: {required, email},
             prenom: {required, alpha},
-            password:{required, alphaNum}
-        }
+            password:{required, alphaNum} 
     },
     computed: {
         ...mapState(['status'])
@@ -63,11 +62,11 @@ export default {
        switchToLogin: function(){
            this.mode = 'login'
        },
-       login: function() {
+       login() {
            this.v$.$validate()
-           if (this.v$.v$error) {
+           if (!this.v$.$invalide) { 
                const self = this
-           this.$store.dispatch('login', {
+           return this.$store.dispatch('login', {
                email: this.email,
                password: this.password
            }).then(function(data) {
@@ -75,26 +74,40 @@ export default {
                self.$router.push('/Post')
            }).catch(function(error) {
                alert('Créer un compte')
-               return error})
+               return error
+               })
            }
        } ,
-       createAccount: function(){
+       createAccount(){
            this.v$.$validate()
-           if (this.v$.v$error) {
+           if (!this.v$.$invalide) {
                const self = this
-           this.$store.dispatch('createAccount', {
+           return this.$store.dispatch('createAccount', {
                email: this.email,
                name: this.prenom,
                password: this.password
            }).then(function(response) {
                localStorage.setItem('gpc', JSON.stringify(response.data.data))
+               /*const instance = axios.create({
+                    baseURL: "http://localhost:3000/api",
+                    headers: {
+                        "Authorization": `Bearer ${response.data.data.token}`,
+                    }
+                })
+                instance.post('/createProfile')
+                    .then((res) => {
+                    return res
+                    })
+                    .catch((error) => {
+                    return error
+                    })*/
                self.$router.push('/Post');
            }).catch(function(error) {
                alert('Compte déjà existant')
-               return error})
-            }
+               return error
+               })
            }
-           
+        }           
     }
 }
 

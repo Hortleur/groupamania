@@ -42,10 +42,11 @@
 
                 <div class="postFooter flex flex-row sm:flex-col sm:items-center flex-nowrap justify-between p-4">
                     <div class="userName flex flex-row">
-                        <img :src="postItem.user.profile.image" alt="photo de profile" class=" w-9 h-9 object-cover rounded-full">
-                        <span>{{postItem.user.name}}</span>
+                        <img v-if="postItem.user.profile !== null" :src="postItem.user.profile.image" alt="photo de profile" class=" w-9 h-9 object-cover rounded-full">
+                        <img v-else src="../assets/default.jpg" alt="photo de profile" class=" w-9 h-9 object-cover rounded-full">
+                        <span class=" self-center">{{postItem.user.name}}</span>
                     </div>
-                    <div class="comments">
+                    <div class="comments flex flex-col justify-center">
                         <div>
                             <p class=" hover:text-green-600">{{commentaires.length}}
                                 commentaire<span v-if="commentaires.length > 1">s</span>
@@ -64,7 +65,7 @@
                     </div>
                     <div v-for="comments in commentaires" :key="comments.id" class=" flex flex-row flex-nowrap justify-center my-3 border-t-2 border-orangeGroupo pt-2">
                         <div class=" flex flex-col justify-center p-3 bg-orange-400 rounded-bl-lg">
-                            <img v-if="comments.user.profile.image !== null" :src="comments.user.profile.image" alt="photo de profile" class=" w-9 h-9 rounded-full object-cover">
+                            <img v-if="comments.user.profile !== null" :src="comments.user.profile.image" alt="photo de profile" class=" w-9 h-9 rounded-full object-cover">
                             <img v-else src="../assets/default.jpg" alt="photo de profil par defaut" class=" w-9 h-9 rounded-full object-cover">
                             <p>{{comments.user.name}}</p>
                         </div>
@@ -123,22 +124,27 @@
                 userId: UserId,
                 postId: '',
                 isAdmin: admin,
-                Likes: []
+                Likes: ''
             }
         },
         methods: {
             getPostItem() {
+                
                 instance.get('/post/onePost/' + this.id)
                     .then((data) => {
+                        this.userLiked()
                         this.postItem = data.data.data
                         this.loading = false
                         this.commentaires = this.postItem.Commentaire
                         this.postId = this.postItem.id
-                        this.userLiked()
+                        
+                        return data
+                        
                     })
                     .catch((error) => {
                         return error
                     })
+                    
             },
             sendComment() {
                 instance.post('/createComment', {
@@ -165,31 +171,31 @@
                 })
                 .catch((error) => {
                     return error
-                })    
-            this.userLiked()      
+                })         
             },
             userLiked(){
             instance.get('/user/likes')
                 .then((res) => {
                     const likes = res.data.data.Likes
+                    this.Likes = likes
                     for (const like of likes) {
                         if(like.postId == this.id && like.userId == this.userId){
-                            return this.isLiked = !this.isLiked
+                            this.isLiked = true
+                        }else{
+                            return
                         }
                     }
-                    return this.Likes = res.data.data.Likes
                 })
                 .catch((error) => {
                     return error
                 })
             },
             onDislike(id){
-                const likeId = this.Likes.find(item => item.postId == id).id
-                console.log(likeId)
+                const likeId = this.Likes.find(item => item.postId === id).id
                 instance.delete(`/like/deletelike/${likeId}`)
                 .then((res) => {                    
                     this.getPostItem()
-                    this.userLiked()
+                    this.isLiked = !this.isLiked
                     return res
                 })
                 .catch((error) => {

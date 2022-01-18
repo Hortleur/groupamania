@@ -31,7 +31,6 @@ const routes = [
   {
     path:'/:catchAll(.*)',
     redirect: {name: 'Post'}
-
   }
 ]
 

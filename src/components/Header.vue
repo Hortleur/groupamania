@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header class=" h-44">
         <img src="../assets/groupomania_logo.webp" alt="Logo groupamania"> 
     </header>
 </template>

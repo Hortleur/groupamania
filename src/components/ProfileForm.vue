@@ -16,8 +16,6 @@
 <script>
     let gpc = localStorage.getItem('gpc')
     const UserId= JSON.parse(gpc).id
-    const token= JSON.parse(gpc).token
-    const axios = require('axios')
     export default {
         name: "ProfileForm",
         data: function(){
@@ -31,28 +29,13 @@
             onFileSelected(event){
                 this.selectedFile = event.target.files[0]
             },
-            createProfile(){
-                const instance = axios.create({
-                    baseURL: "http://localhost:3000/api",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data"
-                    },
-                })
-                let fd = new FormData();
-                fd.append('image', this.selectedFile)
-
+            createProfile(){              
                 const formContent = {
                     bio: this.bio,
                     userId: this.userId,
                     image: this.selectedFile
                 }
-                console.log(formContent)
-                fd.append('formContent', JSON.stringify(formContent))
-                instance.post('/createProfile', fd)
-                .then(res => {
-                    return res
-                })
+                this.$emit('changement', formContent)
             }
         } 
     }

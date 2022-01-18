@@ -50,7 +50,6 @@ exports.isLike = async(req, res, next) => {
 exports.deleteLike = async(req, res, next) => {
     try {
         let id = req.params.id
-        console.log(id)
         const deletelike = await prisma.likes.delete({
             where: {
                 id: Number(id)

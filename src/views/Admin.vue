@@ -16,7 +16,7 @@
                         <option v-for="(user, userId) in users" :key="userId" :value="user.id" class=" w-">{{user.name}}</option>
                     </select>
                 </form>
-                <div v-if="selected" class=" sm:flex-col sm:my-6  md:flex-col mt-6 flex justify-around">
+                <div v-if="selected" class=" sm:flex-col sm:my-6  md:flex-col mt-6 flex justify-around sm:w-screen">
                     
                     <div class=" bg-orange-300 p-3 rounded-xl sm:mb-6 md:mb-6">
                         <h2 class=" font-bold text-green-600 text-2xl">PROFILE</h2>
@@ -26,17 +26,17 @@
                             <img v-else src="../assets/default.jpg" alt="photo de profil par defaut" width="320" class=" h-80 object-cover mx-auto">
                             <p class=" my-3">Bio: {{selectedUser.profile.bio}}</p>
                         </div>
-                        <button class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer l'utilisateur</button>
+                        <button @click="delUser()" class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer l'utilisateur</button>
                     </div> 
                     
                     <div class=" bg-orange-300 p-3 rounded-xl">
                         <h2 class=" font-bold text-green-600 text-2xl">POSTS</h2>
                         <div v-for="(post, postId) in selectedUser.posts" :key="postId">
-                            <div class=" bg-pink-100 rounded-xl my-4 w-80 sm:mx-auto md:mx-auto">
+                            <div class=" bg-pink-100 rounded-xl my-4 ">
                                 <h3>{{post.title}}</h3>
-                                <img v-if="post.image" :src="post.image" :alt="post.imageAltText" width="320"  class=" h-80 object-contain">
+                                <img v-if="post.image" :src="post.image" :alt="post.imageAltText" width="320"  class=" h-80 object-cover mx-auto">
                                 <p v-if="post.content">{{post.content}}</p>
-                                <button @click="supprPost(post.id)" class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer post</button>
+                                <button @click="supprPost(post.id, post.image)" class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer post</button>
                             </div> 
                         </div>
                     </div>   
@@ -60,7 +60,8 @@
     const instance = axios.create({
         baseURL: "http://localhost:3000/api",
         headers: {
-            "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
+            "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
+            "Content-Type": "application/json"
         }
     })
     import Header from '../components/Header.vue'
@@ -77,7 +78,6 @@
             return {
                 user: user,
                 users: [],
-                isClosed: true,
                 selected:"",
                 userProfile:[],
                 selectedUser:"",
@@ -96,25 +96,34 @@
                     return error
                 })
             },
-            displayPosts(){
-                this.isClosed = !this.isClosed
-            },
-            hidePosts(){
-                this.isClosed = !this.isClosed
-            },
             userChange(event){
                 this.selectedUser = this.users.find(user => user.id === Number(event.target.value))
             },
             backToPost(){
                 this.$router.push('/Post')
             },
-            supprPost(id){
-                console.log(id)
-                instance.delete(`/post/delete/${id}`)
+            supprPost(id, image){
+                instance.delete(`/post/delete/${id}`, {
+                    data:{
+                        image: image
+                        }
+                    })
                 .then((res) => {
-                    console.log(res)
+                    return res
                 })
                 .catch((error) =>{
+                    return error
+                })
+            },
+            delUser(){
+                const id = this.selectedUser.id
+                instance.delete( `/user/delete/${id}`)
+                .then((res) => {
+                    this.getUsers()
+                    alert('Utilisateur correctement supprimer')
+                    return res
+                })
+                .catch((error) => {
                     return error
                 })
             }

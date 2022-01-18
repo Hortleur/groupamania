@@ -7,10 +7,8 @@ const prisma = new PrismaClient();
 
 
 exports.signup = async (req, res, next) => {
-    console.log(req.body)
         try {
             const user = await auth.signup(req, res)
-            console.log(user)
             res.status(201).json({
                 status: true,
                 message: 'Utilisateur créer',
@@ -62,7 +60,7 @@ exports.oneUserProfile = async (req, res, next) => {
             id: Number(id)
         },
         include:{
-            profile: true
+            profile: true,
         }
     })
         res.status(200).json({
@@ -96,10 +94,9 @@ exports.oneUser = async (req, res, next) => {
 }
 
 exports.deleteUser = async (req, res, next) => {
-    const id = req.user.payload.id
-    if(id === req.user.payload.id || req.user.payload.isAdmin === 1){
+    const id = req.params.id
+    if(req.user.payload.isAdmin === 1 || id === req.user.payload.id){
         try {
-            const id = req.user.payload.id
             const user = await prisma.user.delete({
                 where: {
                     id: Number(id)
@@ -114,5 +111,4 @@ exports.deleteUser = async (req, res, next) => {
             next(createHttpError(e.statusCode, e.message))
         }
     }
-    
 }

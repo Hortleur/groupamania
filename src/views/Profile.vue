@@ -10,76 +10,46 @@
                 </button>
             </router-link>
         </div>
-
-        <div v-if="!profileTrue" class=" border-pink-100 border-2">
-            <div>
-                <button @click="openModal = !openModal" class=" bg-pink-100 my-4 p-3 rounded">Créer son profile</button>
-            </div>
-            <div v-if="openModal"
-                class=" fixed z-50 overflow-x-hidden overflow-y-auto inset-0 flex justify-center items-center ">
-                <div class=" relative mx-auto w-auto">
-                    <button @click="openModal = !openModal && getProfile()">
-                        <i class="fas fa-times-circle text-4xl text-orangeGroupo"></i>
-                    </button>
-                    <ProfileForm />
-                </div>
-            </div>
-            <div v-if="openModal" class=" absolute inset-0 z-40 opacity-90 bg-white">
-            </div>
-        </div>
-        <div v-else>
+        <div>
             <div class=" bg-white w-1/3 mx-auto rounded-xl p-3 sm:w-screen sm:p-4">
                 <div class=" flex flex-row flex-nowrap items-center">
-                    <div class=" w-28 relative top-1.5">
-                        <img v-if="profile.image" :src="profile.image" alt="Photo de Profile"
-                            class=" rounded-2xl object-cover">
-                        <img v-else src="../assets/default.jpg" alt="photo de profile"
-                            class=" rounded-2xl object-cover">
-                    </div>
+                    <div class=" flex flex-col items-center">
+                        <div @click="$refs.fileInput.click()"
+                        class=" w-16 relative top-1.5 cursor-pointer">
+                            <img v-if="profile.image" :src="profile.image" alt="Photo de Profile"
+                                class=" rounded-2xl object-cover">
+                            <img v-else src="../assets/default.jpg" alt="photo de profile"
+                                class=" rounded-2xl object-cover">
+                            <input class=" hidden" type="file" @change="changePic" ref="fileInput">
+                        </div>
+                        <div v-if="updatePic" class=" mt-6 bg-red-400 p-2 rounded-lg border-2 border-gray-400">                          
+                            <button type="submit" @click="updateProfilePic">Enregistrer l'image</button>
+                        </div>
+                    </div>                    
+                    
                     <div class=" flex-grow">
                         <div class=" border-b-2 border-orangeGroupo w-1/2 mx-auto mb-2">
                             <h1 class=" font-bold text-5xl">
-                                {{user.name}}
+                                {{userName}}
                             </h1>
                         </div>
-                        <div class=" mt-2 font-semibold text-lg">
+                        <div @click="changeBio" class=" mt-2 text-lg cursor-pointer hover:bg-orange-200 w-3/4 mx-auto">
+                            <h2 class=" font-bold">Bio :</h2>
                             <p>{{profile.bio}}</p>
+                        </div>
+                        <div v-show="bioForm">
+                            <form class=" flex flex-col">
+                                <textarea v-model="bio" cols="20" rows="5" class=" border-2 border-gray-400"></textarea>
+                                <button @click=" updateBio" type="submit" class=" bg-pink-100 mt-2 p-2 rounded-lg font-semibold border-2 border-gray-400">Enregistrer</button>
+                            </form>
                         </div>
                     </div>
                 </div>
                 <div class=" flex flex-row justify-evenly mt-3">
                     <button @click="deleteAccount"
-                        class=" bg-gray-500 p-3 rounded-lg text-white font-bold hover:text-black hover:bg-red-700 sm:mr-3">Supprimer
+                        class=" bg-gray-500 p-3 rounded-lg text-white font-bold hover:text-black hover:bg-red-700 sm:bg-red-700">Supprimer
                         mon compte
                     </button>
-                    <button class=" bg-gray-500 p-3 rounded-lg text-white font-bold hover:text-black hover:bg-green-500"
-                        @click="update">Modifier mon profile
-                    </button>
-                    <div v-if="openUpdateModal"
-                        class=" fixed z-50 overflow-x-hidden overflow-y-auto inset-0 flex justify-center items-center ">
-                        <div class=" relative mx-auto w-auto">
-                            <button @click="openUpdateModal = !openUpdateModal && getProfile()">
-                                <i class="fas fa-times-circle text-4xl text-orangeGroupo"></i>
-                            </button>
-                            <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl ">
-                                <div class="my-4">
-                                    <label for="bio"> bio:</label>
-                                    <textarea v-model="bio" name="bio" id="bio" cols="30" rows="5"
-                                        class=" px-2"></textarea>
-                                </div>
-                                <div>
-                                    <input @change="onFileSelected" type="file" name="image" id="image">
-                                </div>
-                                <div>
-                                    <button @click="updateProfile" type="submit"
-                                        class="my-4 bg-orange-200 p-4 rounded-xl border-black border-2 shadow-lg">Modifier
-                                        son Profile</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="openUpdateModal" class=" absolute inset-0 z-40 opacity-90 bg-white sm:fixed">
                 </div>
             </div>
         </div>
@@ -92,32 +62,50 @@
 <script>
     import Header from "../components/Header.vue";
     import Footer from "../components/Footer.vue";
-    import ProfileForm from "../components/ProfileForm.vue";
     import axios from "axios";
-    
+    const gpc = localStorage.getItem('gpc')
+    const token = JSON.parse(gpc).token
+
     export default {
         name: 'Profile',
 
         components: {
             Header,
             Footer,
-            ProfileForm,
         },
         data() {
             return {
-                openModal: false,
                 userId: JSON.parse(localStorage.getItem('gpc')).id,
                 profileTrue: false,
                 profile: '',
-                user: '',
+                userName: JSON.parse(localStorage.getItem('gpc')).name,
                 openUpdateModal: false,
                 selectedFile: null,
-                bio:''
+                bio: '',
+                bioForm: false,
+                updatePic: false
+
             }
         },
         methods: {
             logOut() {
                 localStorage.clear()
+            },
+            updateBio() {
+                const instance = axios.create({
+                    baseURL: "http://localhost:3000/api",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    }
+                })
+                instance.put('/editProfileBio',{
+                    bio: this.bio
+                } )
+                    .then(res => {
+                        this.bioForm = !this.bioForm
+                        this.getProfile()
+                        return res
+                    })
             },
             getProfile() {
                 const instance = axios.create({
@@ -129,11 +117,9 @@
                 instance.get('/user/Profile')
                     .then((res) => {
                         let profileData = res.data.data.profile
-                        let userData = res.data.data
                         if (profileData != null) {
                             this.profileTrue = !this.profileTrue
                             this.profile = profileData
-                            this.user = userData
                         }
                     })
                     .catch((error) => {
@@ -141,30 +127,28 @@
                     })
             },
             deleteAccount() {
-                            const instance = axios.create({
+                const self = this
+                const instance = axios.create({
                     baseURL: "http://localhost:3000/api",
                     headers: {
                         "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
                     }
                 })
-                instance.delete('/user/delete', {
-                        id: this.userId
-                    })
+                instance.delete(`/user/delete/${this.userId}`)
                     .then((res) => {
+                        this.logOut()
+                        self.$router.push('/')
                         return res
                     })
                     .catch((error) => {
                         return error
                     })
             },
-            onFileSelected(event){
+            onFileSelected(event) {
                 this.selectedFile = event.target.files[0]
             },
-            update() {
-                this.openUpdateModal = !this.openUpdateModal
-            },
-            updateProfile(){
-                            const instance = axios.create({
+            updateProfilePic() {
+                const instance = axios.create({
                     baseURL: "http://localhost:3000/api",
                     headers: {
                         "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`
@@ -172,19 +156,27 @@
                 })
                 let fd = new FormData()
                 fd.append('image', this.selectedFile)
-                const formContent = {
-                    bio: this.bio,
-                    image: this.selectedFile
+                instance.put('/editProfilePic', fd)
+                    .then((res) => {
+                        this.getProfile()
+                        this.updatePic = false
+                        return res
+                    })
+                    .catch((error) => {
+                        return error
+                    })
+            },
+            changePic(event) {
+                this.selectedFile = event.target.files[0]
+                console.log(this.selectedFile)
+                this.updatePic = true
+            },
+            changeBio(){
+                if(this.bioForm === false) {
+                    this.bioForm = true
+                }else if(this.bioForm === true){
+                    this.bioform = false
                 }
-                fd.append('formContent', JSON.stringify(formContent))
-                instance.put('/editProfile', fd)
-                .then((res) => {
-                    this.openUpdateModal = !this.openUpdateModal        
-                    return res
-                })
-                .catch((error) => {
-                    return error
-                }) 
             }
         },
         created() {

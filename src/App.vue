@@ -19,6 +19,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: black;
+  font-display: swap;
 }
 html{
   background-color: black

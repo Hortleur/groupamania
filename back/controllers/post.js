@@ -100,25 +100,44 @@ exports.onePost = async(req, res, next) => {
 }
 
 exports.deletePost = async(req, res, next) => {
-    try {
-        const {id} = req.params
-        
-    const post = await prisma.post.delete({
-        where: {
-            id: Number(id)
-        } 
-    })
-        const image = req.body
-        const filename = String(image).split('/image/')[1]
-        console.log(filename)
-        fs.unlinkSync(`image/${filename}`, () => {
-            res.status(200).json({
-                status : true,
-                message: 'Post bien supprimer',
-                data: post
-            })
-        })
-    } catch (e) {
-        next(createHttpError(e.statusCode, e.message)) 
+    if(req.user.payload.isAdmin === 1){    
+            const image = req.body.image
+            const filename = String(image).split('/image/')[1]
+            fs.unlink(`image/${filename}`, async() => {
+                try {                
+                    const post = await prisma.post.delete({
+                        where: {
+                            id: Number(req.params.id)
+                        } 
+                    })
+                    res.status(200).json({
+                        status : true,
+                        message: 'Post bien supprimer',
+                        data: post
+                    })
+                }catch (e) {
+                    next(createHttpError(e.statusCode, e.message)) 
+                }
+            })   
+    } else if (req.body.post.userId === req.user.payload.id) {
+        const image = req.body.post.image
+            const filename = String(image).split('/image/')[1]
+            fs.unlink(`image/${filename}`, async() => {
+                try {                
+                    const post = await prisma.post.delete({
+                        where: {
+                            id: Number(req.params.id)
+                        } 
+                    })
+                    res.status(200).json({
+                        status : true,
+                        message: 'Post bien supprimer',
+                        data: post
+                    })
+                }catch (e) {
+                    next(createHttpError(e.statusCode, e.message)) 
+                }
+            })   
     }
+    
 }

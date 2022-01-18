@@ -20,7 +20,13 @@ exports.signup = async (req) => {
         data: {
             email,
             "password" : hash,
-            name
+            name,
+            profile:{
+                create:{
+                    bio: 'Présentez vous',
+                    image: 'http://localhost:3000/image/default/default.jpg'
+                }
+            }
         },
     })
     const token = await jwt.signAccessToken(user)
@@ -48,7 +54,6 @@ exports.login = async (req) => {
     if (!checkPassword) throw createHttpError.Unauthorized('Email ou Mot de Passe invalide')
     delete user.password
     const token = await jwt.signAccessToken(user)
-    console.log(user, token)
     return {
         ...user,
         token

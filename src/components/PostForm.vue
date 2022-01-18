@@ -21,9 +21,7 @@
 
 <script>
 let gpc = localStorage.getItem('gpc')
-//const token = JSON.parse(gpc).token
 const UserId= JSON.parse(gpc).id
-//const axios = require('axios')
 
 export default {
     name:'PostForm',

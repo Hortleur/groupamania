@@ -4,15 +4,15 @@
             <div>
                 <Header />
             </div>
-            <div class=" mb-16">
+            <div class=" flex flex-row flex-nowrap justify-center">
                 <router-link to="/Profile">
                     <i @click="goToProfile" class="fas fa-user-astronaut text-3xl text-orangeGroupo"></i>
                 </router-link>
-                <button @click="toggleModal = !toggleModal">
+                <button @click="toggleModal = !toggleModal" class=" mx-2">
                     <i class="fas fa-plus-circle text-orangeGroupo text-3xl mx-8"></i>
                 </button>
-                <router-link to="/Admin">
-                    <i class="fas fa-users-cog text-orangeGroupo text-3xl " v-show="admin"></i>
+                <router-link v-if="admin" to="/Admin">
+                    <i class="fas fa-users-cog text-orangeGroupo text-3xl "></i>
                 </router-link>
             </div>
         </div>
@@ -30,7 +30,7 @@
         </div>
         <div class=" mx-auto sm:flex sm:flex-row-reverse sm:flex-nowrap my-8 sm:justify-around mt-80">
             <div class="">
-                <PostList />
+                <PostList :key="listKey" />
             </div>
         </div>
 
@@ -58,7 +58,8 @@
             return{
                 toggleModal: false,
                 admin:false,
-                Posts:[]
+                Posts:[],
+                listKey: 0
             }
         },
         components: {
@@ -78,16 +79,17 @@
             },
 
             logChangement(event){
-                console.log(event.image )
                 const instance = axios.create({
                 baseURL: "http://localhost:3000/api",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
-            }, 
-            })
+                    }, 
+                })
                 let fd = new FormData()
-                fd.append('image', event.image)
+                if (event.image != null) {
+                    fd.append('image', event.image)
+                }
                 const formContent = {
                     title : event.title,
                     content : event.content,
@@ -95,15 +97,16 @@
                 }
                 fd.append('formContent', JSON.stringify(formContent))
                 
-            instance.post('/createPost', fd)
-            .then((res) => {
-                this.toggleModal = !this.toggleModal
-                return res
-            })
-            .catch((error) => {
-                return error
-            })
-            },
+                instance.post('/createPost', fd)
+                .then((res) => {
+                    this.toggleModal = !this.toggleModal
+                    this.listKey += 1
+                    return res
+                })
+                .catch((error) => {
+                    return error
+                })
+                },
             
 
         },
