@@ -9,14 +9,13 @@
   },
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.2.17",
-    "@vuelidate/core": "^2.0.0-alpha.33",
+    "@vuelidate/core": "^2.0.0-alpha.34",
     "@vuelidate/validators": "^2.0.0-alpha.26",
     "autoprefixer": "^9",
     "axios": "^0.24.0",
     "core-js": "^3.20.2",
     "date-fns": "^2.28.0",
     "es6-promise": "^4.2.8",
-    "moment": "^2.29.1",
     "mutationobserver-shim": "^0.3.7",
     "popper.js": "^1.16.1",
     "portal-vue": "^2.1.7",
@@ -25,7 +24,6 @@
     "timeago.js": "^4.0.2",
     "vue": "^3.2.26",
     "vue-router": "^4.0.0-0",
-    "vuelidate": "^0.7.7",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

@@ -40,6 +40,9 @@
                         <div v-show="bioForm">
                             <form class=" flex flex-col">
                                 <textarea v-model="bio" cols="20" rows="5" class=" border-2 border-gray-400"></textarea>
+                                <div v-if="v$.bio.$error">
+                                    {{v$.bio.$errors[0].$message}}
+                                </div>
                                 <button @click=" updateBio" type="submit" class=" bg-pink-100 mt-2 p-2 rounded-lg font-semibold border-2 border-gray-400">Enregistrer</button>
                             </form>
                         </div>
@@ -60,11 +63,14 @@
 </template>
 
 <script>
+    import useVuelidate from '@vuelidate/core';
+    import { required} from '@vuelidate/validators' 
     import Header from "../components/Header.vue";
     import Footer from "../components/Footer.vue";
     import axios from "axios";
     const gpc = localStorage.getItem('gpc')
     const token = JSON.parse(gpc).token
+
 
     export default {
         name: 'Profile',
@@ -75,6 +81,7 @@
         },
         data() {
             return {
+                v$: useVuelidate(),
                 userId: JSON.parse(localStorage.getItem('gpc')).id,
                 profileTrue: false,
                 profile: '',
@@ -87,25 +94,36 @@
 
             }
         },
+        validations(){
+            return{
+                bio:{required}
+            } 
+        },
         methods: {
             logOut() {
                 localStorage.clear()
             },
             updateBio() {
-                const instance = axios.create({
-                    baseURL: "http://localhost:3000/api",
-                    headers: {
+                this.v$.$validate()
+                    if (!this.v$.$error) {
+                        const instance = axios.create({
+                        baseURL: "http://localhost:3000/api",
+                        headers: {
                         "Authorization": `Bearer ${token}`,
-                    }
-                })
-                instance.put('/editProfileBio',{
-                    bio: this.bio
-                } )
-                    .then(res => {
-                        this.bioForm = !this.bioForm
-                        this.getProfile()
-                        return res
-                    })
+                        }
+                        })
+                        instance.put('/editProfileBio',{
+                            bio: this.bio
+                        })
+                        .then(res => {
+                            this.bioForm = !this.bioForm
+                            this.getProfile()
+                            return res
+                        })
+                        .catch((error) => {
+                            return error
+                        })
+                    }   
             },
             getProfile() {
                 const instance = axios.create({

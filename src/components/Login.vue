@@ -6,15 +6,15 @@
         <p class="card_subtitle text-lg" v-else>Déjà un compte ? <span class="card_action text-base text-orangeGroupo hover:text-green-600 cursor-pointer" @click="switchToLogin">Se Connecter</span></p>
         <div class="form-row">
             <input v-model="email" type="text" placeholder=" exemple@email.com" class=" py-2 my-3 rounded-lg placeholder-gray-600 border-2 border-black text-center">
-            <div v-if="v$.email.$error">L'email est incorrect</div>
+            <div v-if="v$.email.$error">{{v$.email.$errors[0].$message}}</div>
         </div>
         <div class="form-row" v-if="mode == 'create'">
             <input v-model="prenom" type="text" placeholder=" Prenom" class=" py-2 my-6 rounded-lg placeholder-gray-600 border-2 border-black text-center">
-            <div v-if="v$.prenom.$error">Le prénom est incorrect</div>
+            <div v-if="v$.prenom.$error">{{v$.prenom.$errors[0].$message}}</div>
         </div>
         <div class="form-row">
             <input v-model="password" type="password" placeholder=" Mot de passe" class=" py-2 my-3 rounded-lg placeholder-gray-600 border-2 border-black text-center">
-            <div v-if="v$.password.$error">Le mot de passe est incorrect</div>
+            <div v-if="v$.password.$error">{{v$.password.$errors[0].$message}}</div>
         </div>
         <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
             Adresse mail ou mot de passe invalide
@@ -31,26 +31,27 @@
 </template>
 
 <script>
-//import axios from "axios";
 import { mapState } from "vuex";
-import useValidate from "@vuelidate/core"
+import useVuelidate from "@vuelidate/core";
 import { required, alphaNum, alpha, email} from '@vuelidate/validators'
 
 export default {
     name: 'Login',
-    data: function() {
+    data() {
         return{
-            v$: useValidate(),
+            v$: useVuelidate(),
             mode: 'login',
             email: '',
             prenom: '',
             password: '',
         }
     },
-    validations:{  
+    validations(){  
+        return {
             email: {required, email},
             prenom: {required, alpha},
-            password:{required, alphaNum} 
+            password:{required, alphaNum}
+        }             
     },
     computed: {
         ...mapState(['status'])
@@ -64,7 +65,7 @@ export default {
        },
        login() {
            this.v$.$validate()
-           if (!this.v$.$invalide) { 
+           if (!this.v$.$error) {
                const self = this
            return this.$store.dispatch('login', {
                email: this.email,
@@ -76,11 +77,11 @@ export default {
                alert('Créer un compte')
                return error
                })
-           }
+           }       
        } ,
        createAccount(){
            this.v$.$validate()
-           if (!this.v$.$invalide) {
+           if (!this.v$.$error) {
                const self = this
            return this.$store.dispatch('createAccount', {
                email: this.email,
@@ -88,25 +89,12 @@ export default {
                password: this.password
            }).then(function(response) {
                localStorage.setItem('gpc', JSON.stringify(response.data.data))
-               /*const instance = axios.create({
-                    baseURL: "http://localhost:3000/api",
-                    headers: {
-                        "Authorization": `Bearer ${response.data.data.token}`,
-                    }
-                })
-                instance.post('/createProfile')
-                    .then((res) => {
-                    return res
-                    })
-                    .catch((error) => {
-                    return error
-                    })*/
                self.$router.push('/Post');
            }).catch(function(error) {
                alert('Compte déjà existant')
                return error
                })
-           }
+           }  
         }           
     }
 }
