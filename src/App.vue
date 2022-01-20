@@ -22,6 +22,6 @@
   font-display: swap;
 }
 html{
-  background-color: black
+  background-color: #2F4858
 }
 </style>

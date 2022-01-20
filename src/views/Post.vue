@@ -1,6 +1,6 @@
 <template>
     <div class=" flex flex-col justify-between h-screen relative">
-        <div class="header flex flex-col flex-nowrap fixed bg-black w-full">
+        <div class="header flex flex-col flex-nowrap fixed bg-blackGroupo w-full">
             <div>
                 <Header />
             </div>
@@ -25,7 +25,7 @@
                 <PostForm  @changement=" logChangement"/>
             </div>
         </div>
-        <div v-if="toggleModal" class=" absolute inset-0 z-40 opacity-90 bg-black sm:fixed">
+        <div v-if="toggleModal" class=" absolute inset-0 z-40 opacity-90 bg-blackGroupo sm:fixed">
             
         </div>
         <div class=" mx-auto sm:flex sm:flex-row-reverse sm:flex-nowrap my-8 sm:justify-around mt-80">

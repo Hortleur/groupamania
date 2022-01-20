@@ -28,6 +28,13 @@ module.exports = {
       pink: colors.pink,
       orange: colors.orange,
       orangeGroupo: "#fb2c04",
+      pinkGroupo: "#EB005E",
+      magentaGroupo: "#B6318D",
+      purpleGroupo: "#6F4C98",
+      NavyGroupo: "#365080",
+      blackGroupo: "#2F4858",
+      greenGroupo: "#006400",
+      redGroupo: "#AA0000"
     },
     spacing: {
       px: '1px',
