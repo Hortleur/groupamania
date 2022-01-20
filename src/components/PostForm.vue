@@ -12,7 +12,7 @@
             <input @change="onFileSelected" type="file" name="image" id="image" class=" my-4">
         </div>
         <div class=" my-4">
-            <button @click="onPost" class="button border-2 border-blackGroupo rounded-full w-1/4 p-4 hover:bg-greenGroupo bg-blackGroupo text-white" type="submit">
+            <button @click="onPost" :disabled="!title" class=" button border-2 border-blackGroupo rounded-full w-1/4 p-4 hover:bg-greenGroupo bg-blackGroupo text-white" type="submit">
                <i class="fas fa-paper-plane text-2xl"></i>
             </button>
         </div>
@@ -33,7 +33,8 @@ export default {
             content:'',
             userId: UserId,
             imageAltText:'',
-            selectedFile: null
+            selectedFile: null,
+            isDisabled: true
         }
     },
     methods:{

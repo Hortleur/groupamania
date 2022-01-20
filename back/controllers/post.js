@@ -4,8 +4,10 @@ const {
 const prisma = new PrismaClient();
 const createHttpError = require('http-errors')
 const fs = require('fs')
+//const multer = require('../middleware/multer-config')
 
 exports.createPost = async(req, res, next) => {
+    console.log(req.body)
     try {
         const {
             title,
@@ -14,6 +16,7 @@ exports.createPost = async(req, res, next) => {
         } = JSON.parse(req.body.formContent)
         const userId = req.user.payload.id
         const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
+
         const post = await prisma.post.create({
             data:{
                 title,

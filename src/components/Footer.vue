@@ -1,6 +1,6 @@
 <template>
     <footer class=" py-2">
-        <img src="../assets/logo_groupamania.webp" alt="logo groupamania">
+        <img src="../assets/logo_groupamania.webp" alt="logo groupamania footer">
     </footer>
 </template>
 

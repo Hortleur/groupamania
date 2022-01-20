@@ -1,7 +1,7 @@
 <template>
     <div v-if="error">{{error}}</div>
     <div v-else v-for="post in posts" :key="post.id"
-        class="posts flex flex-row flex-nowrap bg-pink-100 my-10 rounded-2xl sm:mx-4">
+        class="posts flex flex-row flex-nowrap bg-pink-100 my-10 rounded-2xl sm:mx-4 md:mx-auto md:w-1/2 lg:mx-auto lg:w-1/2 xl:mx-auto xl:w-1/2">
         <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
             <div class="likes mx-2">
                 <div v-if="isLiked && Likes.find(item => item.postId === post.id)">
@@ -23,7 +23,7 @@
             <div>
                 <div class="content">
                     <div v-if="post.image" class=" mx-auto p-6 border-b-4 border-orangeGroupo">
-                        <img :src="post.image" :alt="post.imageAltText" width="400" loading="lazy">
+                        <img :src="post.image" :alt="post.imageAltText" width="400" loading="lazy" class=" mx-auto">
                     </div>
                     <div v-if="post.content" class=" border-b-4 border-orangeGroupo p-3">
                         {{post.content}}
