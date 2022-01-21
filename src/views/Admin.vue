@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
     <div class="flex flex-col flex-nowrap h-screen justify-between text-white" v-if="admin === 1">
         <router-link to="/Post">

@@ -1,8 +1,8 @@
-
+/* eslint-disable */
 <template>
     <div v-if="error">{{error}}</div>
     <div v-else v-for="post in posts" :key="post.id"
-        class="posts flex flex-row flex-nowrap bg-pink-100 my-10 rounded-2xl sm:mx-4 md:mx-auto md:w-1/2 lg:mx-auto lg:w-1/2 xl:mx-auto xl:w-1/2">
+        class="posts flex flex-row flex-nowrap bg-pink-100 my-10 rounded-2xl sm:mx-4 md:mx-auto lg:mx-auto  xl:mx-auto">
         <div class=" flex flex-col flex-nowrap border-r-4 border-orangeGroupo justify-center">
             <div class="likes mx-2">
                 <div v-if="isLiked && Likes.find(item => item.postId === post.id)">

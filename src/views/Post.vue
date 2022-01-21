@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
     <div class=" flex flex-col justify-between h-screen relative">
         <div class="header flex flex-col flex-nowrap fixed bg-blackGroupo w-full">

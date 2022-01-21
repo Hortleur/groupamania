@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
     <div class="flex flex-col justify-between h-screen">
         <div class=" sm:mb-4 md:flex-row md:justify-between md:items-center md:mx-24">

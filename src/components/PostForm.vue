@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
     <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl sm:w-screen">
         <div class=" my-4">
