@@ -1,3 +1,4 @@
+
 <template>
     <div v-if="error">{{error}}</div>
     <div v-else v-for="post in posts" :key="post.id"
