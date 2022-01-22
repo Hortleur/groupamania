@@ -129,8 +129,8 @@
             }
         },
         methods: {
-            getPostItem() {
-                
+//recupération des posts
+            getPostItem() {                
                 instance.get('/post/onePost/' + this.id)
                     .then((data) => {
                         this.userLiked()
@@ -147,6 +147,7 @@
                     })
                     
             },
+//envois de commentaires
             sendComment() {
                 instance.post('/createComment', {
                         comment: this.comment,
@@ -160,6 +161,7 @@
                         return error
                     })
             },
+//like
             onLike(){ 
                 const id = this.postId
                 instance.post('/like', {
@@ -174,6 +176,7 @@
                     return error
                 })         
             },
+//verification du like
             userLiked(){
             instance.get('/user/likes')
                 .then((res) => {
@@ -191,6 +194,7 @@
                     return error
                 })
             },
+//enlever le like
             onDislike(id){
                 const likeId = this.Likes.find(item => item.postId === id).id
                 instance.delete(`/like/deletelike/${likeId}`)
@@ -201,9 +205,9 @@
                 })
                 .catch((error) => {
                     return error
-                }) 
-                
+                })   
             },
+//suppression du commentaire
             deleteComment(id){
                 instance.delete(`/comment/delete/${id}`)
                 .then((res) => {
@@ -220,7 +224,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

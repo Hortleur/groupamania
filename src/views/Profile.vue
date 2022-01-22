@@ -16,11 +16,11 @@
                 <div class=" flex flex-row flex-nowrap items-center">
                     <div class=" flex flex-col items-center">
                         <div @click="$refs.fileInput.click()"
-                        class=" w-16 relative top-1.5 cursor-pointer">
+                        class="cursor-pointer">
                             <img v-if="profile.image" :src="profile.image" alt="Photo de Profile"
-                                class=" rounded-2xl object-cover">
+                                class=" rounded-2xl object-cover w-36 h-36">
                             <img v-else src="../assets/default.jpg" alt="photo de profile"
-                                class=" rounded-2xl object-cover">
+                                class=" rounded-2xl object-cover w-36 h-36">
                             <input class=" hidden" type="file" @change="changePic" ref="fileInput">
                         </div>
                         <div v-if="updatePic" class=" mt-6 bg-red-400 p-2 rounded-lg border-2 border-gray-400">                          
@@ -39,8 +39,8 @@
                             <p>{{profile.bio}}</p>
                         </div>
                         <div v-show="bioForm">
-                            <form class=" flex flex-col">
-                                <textarea v-model="bio" cols="20" rows="5" class=" border-2 border-gray-400"></textarea>
+                            <form class=" flex flex-col ml-3">
+                                <textarea v-model="bio" cols="20" rows="5" class=" border-2 border-gray-400 rounded-lg"></textarea>
                                 <div v-if="v$.bio.$error">
                                     {{v$.bio.$errors[0].$message}}
                                 </div>
@@ -69,8 +69,8 @@
     import Header from "../components/Header.vue";
     import Footer from "../components/Footer.vue";
     import axios from "axios";
-    const gpc = localStorage.getItem('gpc')
-    const token = JSON.parse(gpc).token
+     /*gpc = localStorage.getItem('gpc')
+     token = JSON.parse(gpc).token*/
 
 
     export default {
@@ -91,26 +91,28 @@
                 selectedFile: null,
                 bio: '',
                 bioForm: false,
-                updatePic: false
-
+                updatePic: false,
             }
         },
+//validation du formulaire
         validations(){
             return{
                 bio:{required}
             } 
         },
         methods: {
+//deconnextion et vidange du localStorage
             logOut() {
                 localStorage.clear()
             },
+//mise a jour de la bio
             updateBio() {
                 this.v$.$validate()
                     if (!this.v$.$error) {
                         const instance = axios.create({
                         baseURL: "http://localhost:3000/api",
                         headers: {
-                        "Authorization": `Bearer ${token}`,
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
                         }
                         })
                         instance.put('/editProfileBio',{
@@ -118,7 +120,6 @@
                         })
                         .then(res => {
                             this.bioForm = !this.bioForm
-                            this.getProfile()
                             return res
                         })
                         .catch((error) => {
@@ -126,6 +127,7 @@
                         })
                     }   
             },
+//recuperation du profile
             getProfile() {
                 const instance = axios.create({
                     baseURL: "http://localhost:3000/api",
@@ -145,6 +147,7 @@
                         return error
                     })
             },
+//suppression du compte
             deleteAccount() {
                 const self = this
                 const instance = axios.create({
@@ -163,9 +166,11 @@
                         return error
                     })
             },
+//evenement de selection du fichier
             onFileSelected(event) {
                 this.selectedFile = event.target.files[0]
             },
+//mise à jour de la photo de profil
             updateProfilePic() {
                 const instance = axios.create({
                     baseURL: "http://localhost:3000/api",
@@ -185,11 +190,12 @@
                         return error
                     })
             },
+//event de choix d'image de profil - affichage du bouton d'envoi
             changePic(event) {
                 this.selectedFile = event.target.files[0]
-                console.log(this.selectedFile)
                 this.updatePic = true
             },
+//affichage du formulaire
             changeBio(){
                 if(this.bioForm === false) {
                     this.bioForm = true
@@ -203,8 +209,3 @@
         }
     }
 </script>
-
-
-<style lang="scss" scoped>
-
-</style>

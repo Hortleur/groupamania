@@ -87,6 +87,7 @@
 
         },
         methods: {
+//recupération des utilisateurs
             getUsers() {
                 instance.get('/user')
                 .then((res) => {
@@ -103,6 +104,7 @@
             backToPost(){
                 this.$router.push('/Post')
             },
+//suppression post
             supprPost(id, image){
                 instance.delete(`/post/delete/${id}`, {
                     data:{
@@ -110,28 +112,27 @@
                         }
                     })
                 .then((res) => {
-                    this.getUsers()
+                    this.selectedUser.posts = this.selectedUser.posts.filter(post => post.id !== id)
                     return res
                 })
                 .catch((error) =>{
                     return error
                 })
             },
+//suppression utilisateur
             delUser(){
                 const id = this.selectedUser.id
                 instance.delete( `/user/delete/${id}`)
-                .then((res) => {
-                    this.getUsers()
-                    alert('Utilisateur correctement supprimer')
+                .then((res) => {   
+                    this.selected = 0                 
+                    this.getUsers()    
+                    alert('Utilisateur correctement supprimer')               
                     return res
                 })
                 .catch((error) => {
                     return error
                 })
             }
-        },
-        computed: {
-
         },
         created() {
             this.getUsers()

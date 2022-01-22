@@ -18,7 +18,7 @@
             <div>
                 <div class="title border-b-4 border-orangeGroupo my-3 flex content-center justify-between p-2">
                     <h2 class=" text-2xl font-bold">{{post.title}}</h2>
-                    <i @click="deletePost(post)" class="fas fa-trash self-center text-red-600" v-if=" isAdmin === 1 || userId == post.user.id"></i>
+                    <i @click="deletePost(post)" class="fas fa-trash self-center text-red-600 cursor-pointer" v-if=" isAdmin === 1 || userId == post.user.id"></i>
                 </div>
             </div>
             <div>
