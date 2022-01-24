@@ -12,7 +12,7 @@
             </router-link>
         </div>
         <div>
-            <div class=" bg-white w-1/3 mx-auto rounded-xl p-3 sm:w-screen sm:p-4">
+            <div class=" bg-white md:w-1/2 w-1/3 mx-auto rounded-xl p-3 sm:w-screen sm:p-4">
                 <div class=" flex flex-row flex-nowrap items-center">
                     <div class=" flex flex-col items-center">
                         <div @click="$refs.fileInput.click()"
@@ -28,9 +28,9 @@
                         </div>
                     </div>                    
                     
-                    <div class=" flex-grow">
-                        <div class=" border-b-2 border-orangeGroupo w-1/2 mx-auto mb-2">
-                            <h1 class=" font-bold text-5xl">
+                    <div class=" mx-auto">
+                        <div class=" w-1/2 mb-2">
+                            <h1 class=" font-bold text-5xl underline">
                                 {{userName}}
                             </h1>
                         </div>

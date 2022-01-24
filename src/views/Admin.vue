@@ -23,7 +23,7 @@
                         <h2 class=" font-bold text-green-600 text-2xl">PROFILE</h2>
                         <div class=" bg-pink-100 rounded-xl my-4">
                             <h3>{{selectedUser.name}}</h3>
-                            <img v-if="selectedUser.profile.image" :src="selectedUser.profile.image" alt="Photo de profile" width="320" class=" h-80 object-cover mx-auto">
+                            <img v-if="selectedUser.profile.image" :src="selectedUser.profile.image" alt="Photo de profile" loading="lazy" width="320" class=" h-80 object-cover mx-auto">
                             <img v-else src="../assets/default.jpg" alt="photo de profil par defaut" width="320" class=" h-80 object-cover mx-auto">
                             <p class=" my-3">Bio: {{selectedUser.profile.bio}}</p>
                         </div>
@@ -35,7 +35,7 @@
                         <div  v-for="(post, postId) in selectedUser.posts" :key="postId">
                             <div class=" bg-pink-100 rounded-xl my-4 ">
                                 <h3>{{post.title}}</h3>
-                                <img v-if="post.image" :src="post.image" :alt="post.imageAltText" width="320"  class=" h-80 object-cover mx-auto">
+                                <img v-if="post.image" :src="post.image" :alt="post.imageAltText" width="320" loading="lazy"  class=" h-80 object-cover mx-auto">
                                 <p v-if="post.content">{{post.content}}</p>
                                 <button @click="supprPost(post.id, post.image)" class=" bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600">Supprimer post</button>
                             </div> 
