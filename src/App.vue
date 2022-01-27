@@ -1,15 +1,12 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <script>
-  export default {
-    name: 'App',
-    components: {
-    
-    }
-  }
-
+export default {
+  name: "App",
+  components: {},
+};
 </script>
 
 <style lang="scss">
@@ -21,7 +18,7 @@
   color: black;
   font-display: swap;
 }
-html{
-  background-color: #2F4858
+html {
+  background-color: #2f4858;
 }
 </style>
