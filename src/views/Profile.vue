@@ -18,39 +18,26 @@
       <div class="bg-white md:w-1/2 w-1/3 mx-auto rounded-xl p-3 sm:w-screen sm:p-4">
         <div class="flex flex-row flex-nowrap items-center">
           <div class="flex flex-col items-center">
-            <div
-              class="cursor-pointer"
-              @click="$refs.fileInput.click()"
-            >
+            <div class="cursor-pointer" @click="$refs.fileInput.click()">
               <img
                 v-if="profile.image"
                 :src="profile.image"
                 alt="Photo de Profile"
                 class="rounded-2xl object-cover w-36 h-36"
-              >
+              />
               <img
                 v-else
                 src="../assets/default.jpg"
                 alt="photo de profile"
                 class="rounded-2xl object-cover w-36 h-36"
-              >
-              <input
-                ref="fileInput"
-                class="hidden"
-                type="file"
-                @change="changePic"
-              >
+              />
+              <input ref="fileInput" class="hidden" type="file" @change="changePic" />
             </div>
             <div
               v-if="updatePic"
               class="mt-6 bg-red-400 p-2 rounded-lg border-2 border-gray-400"
             >
-              <button
-                type="submit"
-                @click="updateProfilePic"
-              >
-                Enregistrer l'image
-              </button>
+              <button type="submit" @click="updateProfilePic">Enregistrer l'image</button>
             </div>
           </div>
 
@@ -64,9 +51,7 @@
               class="mt-2 text-lg cursor-pointer hover:bg-orange-200 w-3/4 mx-auto"
               @click="changeBio"
             >
-              <h2 class="font-bold">
-                Bio :
-              </h2>
+              <h2 class="font-bold">Bio :</h2>
               <p>{{ profile.bio }}</p>
             </div>
             <div v-show="bioForm">
@@ -113,8 +98,6 @@ import { required } from "@vuelidate/validators";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 import axios from "axios";
-/*gpc = localStorage.getItem('gpc')
-     token = JSON.parse(gpc).token*/
 
 export default {
   name: "Profile",

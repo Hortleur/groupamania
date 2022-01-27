@@ -6,14 +6,8 @@
         <Header />
       </router-link>
     </div>
-    <div
-      v-if="loading"
-      class="mx-auto"
-    >
-      <img
-        src="@/assets/loader.png"
-        alt="loader"
-      >
+    <div v-if="loading" class="mx-auto">
+      <img src="@/assets/loader.png" alt="loader" />
     </div>
     <div
       v-else
@@ -30,10 +24,7 @@
             />
           </div>
           <div v-else>
-            <i
-              class="fas fa-heart cursor-pointer text-2xl"
-              @click="onLike"
-            />
+            <i class="fas fa-heart cursor-pointer text-2xl" @click="onLike" />
           </div>
           <span v-if="postItem.Likes.length === 0"> 0 </span>
           <span v-else>{{ postItem.Likes.length }}</span>
@@ -61,13 +52,10 @@
                   :alt="postItem.imageAltText"
                   loading="lazy"
                   class="object-cover"
-                >
+                />
               </div>
             </div>
-            <div
-              v-if="postItem.content"
-              class="border-b-4 border-orangeGroupo p-3"
-            >
+            <div v-if="postItem.content" class="border-b-4 border-orangeGroupo p-3">
               {{ postItem.content }}
             </div>
           </div>
@@ -82,21 +70,21 @@
               :src="postItem.user.profile.image"
               alt="photo de profile"
               class="w-9 h-9 object-cover rounded-full"
-            >
+            />
             <img
               v-else
               src="../assets/default.jpg"
               alt="photo de profile"
               class="w-9 h-9 object-cover rounded-full"
-            >
+            />
             <span class="self-center">{{ postItem.user.name }}</span>
           </div>
           <div class="comments flex flex-col justify-center">
             <div>
               <p class="hover:text-green-600">
-                {{ commentaires.length }} commentaire<span
-                  v-if="commentaires.length > 1"
-                >s</span>
+                {{ commentaires.length }} commentaire<span v-if="commentaires.length > 1"
+                  >s</span
+                >
               </p>
             </div>
           </div>
@@ -129,13 +117,13 @@
                 :src="comments.user.profile.image"
                 alt="photo de profile"
                 class="w-9 h-9 rounded-full object-cover"
-              >
+              />
               <img
                 v-else
                 src="../assets/default.jpg"
                 alt="photo de profil par defaut"
                 class="w-9 h-9 rounded-full object-cover"
-              >
+              />
               <p>{{ comments.user.name }}</p>
             </div>
             <div class="bg-orange-400 p-3 rounded-r-lg">
@@ -167,18 +155,8 @@
 <script>
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-let gpc = localStorage.getItem("gpc");
-const UserId = JSON.parse(gpc).id;
-const admin = JSON.parse(gpc).isAdmin;
 
 const axios = require("axios");
-const instance = axios.create({
-  baseURL: "http://localhost:3000/api",
-  headers: {
-    Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
-  },
-});
-
 export default {
   components: {
     Header,
@@ -186,15 +164,16 @@ export default {
   },
   data() {
     return {
+      userId: JSON.parse(localStorage.getItem("gpc")).id,
+      userName: JSON.parse(localStorage.getItem("gpc")).name,
       id: this.$route.params.id,
       postItem: {},
       loading: true,
       isLiked: false,
       commentaires: [],
       comment: "",
-      userId: UserId,
       postId: "",
-      isAdmin: admin,
+      isAdmin: JSON.parse(localStorage.getItem("gpc")).isAdmin,
       Likes: "",
     };
   },
@@ -202,9 +181,18 @@ export default {
     this.getPostItem();
   },
   methods: {
+    getAxios() {
+      const instance = axios.create({
+        baseURL: "http://localhost:3000/api",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
+        },
+      });
+      return instance;
+    },
     //recupération des posts
     getPostItem() {
-      instance
+      this.getAxios()
         .get("/post/onePost/" + this.id)
         .then((data) => {
           this.userLiked();
@@ -221,7 +209,7 @@ export default {
     },
     //envois de commentaires
     sendComment() {
-      instance
+      this.getAxios()
         .post("/createComment", {
           comment: this.comment,
           postId: Number(this.postId),
@@ -237,7 +225,7 @@ export default {
     //like
     onLike() {
       const id = this.postId;
-      instance
+      this.getAxios()
         .post("/like", {
           id: Number(id),
         })
@@ -251,7 +239,7 @@ export default {
     },
     //verification du like
     userLiked() {
-      instance
+      this.getAxios()
         .get("/user/likes")
         .then((res) => {
           const likes = res.data.data.Likes;
@@ -271,7 +259,7 @@ export default {
     //enlever le like
     onDislike(id) {
       const likeId = this.Likes.find((item) => item.postId === id).id;
-      instance
+      this.getAxios()
         .delete(`/like/deletelike/${likeId}`)
         .then((res) => {
           this.getPostItem();
@@ -284,7 +272,7 @@ export default {
     },
     //suppression du commentaire
     deleteComment(id) {
-      instance
+      this.getAxios()
         .delete(`/comment/delete/${id}`)
         .then((res) => {
           this.getPostItem();

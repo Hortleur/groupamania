@@ -21,10 +21,7 @@
             />
           </div>
           <div v-else>
-            <i
-              class="fas fa-heart cursor-pointer text-2xl"
-              @click="onLike(post.id)"
-            />
+            <i class="fas fa-heart cursor-pointer text-2xl" @click="onLike(post.id)" />
           </div>
           <span>{{ post.Likes.length }}</span>
         </div>
@@ -46,22 +43,16 @@
         </div>
         <div>
           <div class="content">
-            <div
-              v-if="post.image"
-              class="mx-auto p-6 border-b-4 border-orangeGroupo"
-            >
+            <div v-if="post.image" class="mx-auto p-6 border-b-4 border-orangeGroupo">
               <img
                 :src="post.image"
                 :alt="post.imageAltText"
                 width="400"
                 loading="lazy"
                 class="mx-auto"
-              >
+              />
             </div>
-            <div
-              v-if="post.content"
-              class="border-b-4 border-orangeGroupo p-3"
-            >
+            <div v-if="post.content" class="border-b-4 border-orangeGroupo p-3">
               {{ post.content }}
             </div>
           </div>
@@ -76,13 +67,13 @@
               :src="post.user.profile.image"
               alt="photo de profile"
               class="w-9 h-9 object-cover rounded-full"
-            >
+            />
             <img
               v-else
               src="../assets/default.jpg"
               alt="photo de profile"
               class="w-9 h-9 object-cover rounded-full"
-            >
+            />
             <span class="self-center">{{ post.user.name }}</span>
           </div>
           <div class="comments">
@@ -91,7 +82,8 @@
                 <p class="hover:text-green-600">
                   {{ post.Commentaire.length }} commentaire<span
                     v-if="post.Commentaire.length > 1"
-                  >s</span>
+                    >s</span
+                  >
                 </p>
               </div>
             </router-link>
@@ -104,12 +96,7 @@
 
 <script>
 import axios from "axios";
-const instance = axios.create({
-  baseURL: "http://localhost:3000/api",
-  headers: {
-    Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
-  },
-});
+
 export default {
   name: "Post",
   components: {},
@@ -129,8 +116,17 @@ export default {
     this.getPosts();
   },
   methods: {
+    getAxios() {
+      const instance = axios.create({
+        baseURL: "http://localhost:3000/api",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
+        },
+      });
+      return instance;
+    },
     getPosts() {
-      instance
+      this.getAxios()
         .get("/post")
         .then((res) => {
           this.posts = res.data.data;
@@ -141,7 +137,7 @@ export default {
         });
     },
     deletePost(post) {
-      instance
+      this.getAxios()
         .delete(`/post/delete/${post.id}`, {
           data: {
             post: post,
@@ -156,7 +152,7 @@ export default {
         });
     },
     onLike(id) {
-      instance
+      this.getAxios()
         .post("/like", {
           id: Number(id),
         })
@@ -169,7 +165,7 @@ export default {
         });
     },
     userLiked() {
-      instance
+      this.getAxios()
         .get("/user/likes")
         .then((res) => {
           const likes = res.data.data.Likes;
@@ -188,7 +184,7 @@ export default {
     },
     onDislike(id) {
       const likeId = this.Likes.find((item) => item.postId == id).id;
-      instance
+      this.getAxios()
         .delete(`/like/deletelike/${likeId}`)
         .then((res) => {
           this.getPosts();

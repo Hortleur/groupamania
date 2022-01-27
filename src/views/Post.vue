@@ -6,22 +6,16 @@
         <Header />
       </div>
       <div class="flex flex-row flex-nowrap justify-center">
-        <router-link to="/Profile">
+        <router-link aria-label="profil" to="/Profile">
           <i
             class="fas fa-user-astronaut text-3xl text-orangeGroupo"
             @click="goToProfile"
           />
         </router-link>
-        <button
-          class="mx-2"
-          @click="toggleModal = !toggleModal"
-        >
+        <button class="mx-2" @click="toggleModal = !toggleModal">
           <i class="fas fa-plus-circle text-orangeGroupo text-3xl mx-8" />
         </button>
-        <router-link
-          v-if="admin"
-          to="/Admin"
-        >
+        <router-link v-if="admin" aria-label=" admin" to="/Admin">
           <i class="fas fa-users-cog text-orangeGroupo text-3xl" />
         </router-link>
       </div>
