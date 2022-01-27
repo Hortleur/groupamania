@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div
-    v-if="admin === 1"
+    v-if="admin == '1'"
     class="flex flex-col flex-nowrap h-screen justify-between text-white"
   >
     <router-link to="/Post">
@@ -10,9 +10,7 @@
       </div>
     </router-link>
     <div>
-      <h1 class="text-4xl">
-        Bienvenue {{ user }}, sur la page Admin de Groupomania
-      </h1>
+      <h1 class="text-4xl">Bienvenue {{ user }}, sur la page Admin de Groupomania</h1>
     </div>
     <div class="sm:w-auto sm:mx-auto md:w-1/2 md:mx-auto my-4 text-black">
       <div>
@@ -40,9 +38,7 @@
           class="sm:flex-col sm:my-6 md:flex-col mt-6 flex justify-around sm:w-screen items-start"
         >
           <div class="bg-orange-300 p-3 rounded-xl sm:mb-6 md:mb-6">
-            <h2 class="font-bold text-green-600 text-2xl">
-              PROFILE
-            </h2>
+            <h2 class="font-bold text-green-600 text-2xl">PROFILE</h2>
             <div class="bg-pink-100 rounded-xl my-4">
               <h3>{{ selectedUser.name }}</h3>
               <img
@@ -52,17 +48,15 @@
                 loading="lazy"
                 width="320"
                 class="h-80 object-cover mx-auto"
-              >
+              />
               <img
                 v-else
                 src="../assets/default.jpg"
                 alt="photo de profil par defaut"
                 width="320"
                 class="h-80 object-cover mx-auto"
-              >
-              <p class="my-3">
-                Bio: {{ selectedUser.profile.bio }}
-              </p>
+              />
+              <p class="my-3">Bio: {{ selectedUser.profile.bio }}</p>
             </div>
             <button
               class="bg-red-700 p-3 my-3 rounded-xl font-bold hover:bg-yellow-600"
@@ -73,13 +67,8 @@
           </div>
 
           <div class="bg-orange-300 p-3 rounded-xl">
-            <h2 class="font-bold text-green-600 text-2xl">
-              POSTS
-            </h2>
-            <div
-              v-for="(post, postId) in selectedUser.posts"
-              :key="postId"
-            >
+            <h2 class="font-bold text-green-600 text-2xl">POSTS</h2>
+            <div v-for="(post, postId) in selectedUser.posts" :key="postId">
               <div class="bg-pink-100 rounded-xl my-4">
                 <h3>{{ post.title }}</h3>
                 <img
@@ -89,7 +78,7 @@
                   width="320"
                   loading="lazy"
                   class="h-80 object-cover mx-auto"
-                >
+                />
                 <p v-if="post.content">
                   {{ post.content }}
                 </p>
@@ -110,21 +99,8 @@
       <Footer />
     </div>
   </div>
-  <div
-    v-else
-    class="flex flex-col justify-center content-center h-screen w-1/2 mx-auto"
-  >
-    <div class="bg-red-500 p-3">
-      <h1 class="text-4xl font-bold">
-        Tu t'es perdu l'ami...
-      </h1>
-      <button
-        class="font-bold text-2xl bg-red-200 hover:bg-green-400 border-2 border-white rounded-lg p-3"
-        @click="backToPost"
-      >
-        Oui :'(
-      </button>
-    </div>
+  <div v-else>
+    <NotFoundComponent />
   </div>
 </template>
 <script>
@@ -138,22 +114,21 @@ const instance = axios.create({
 });
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-const gpc = localStorage.getItem("gpc");
-const user = JSON.parse(gpc).name;
-const admin = JSON.parse(gpc).isAdmin;
+import NotFoundComponent from "../components/NotFoundComponent.vue";
 export default {
   components: {
     Header,
     Footer,
+    NotFoundComponent,
   },
   data() {
     return {
-      user: user,
+      user: JSON.parse(localStorage.getItem("gpc")).name,
       users: [],
       selected: "",
       userProfile: [],
       selectedUser: "",
-      admin: admin,
+      admin: JSON.parse(localStorage.getItem("gpc")).isAdmin,
     };
   },
   created() {

@@ -55,8 +55,6 @@ import Header from "../components/Header.vue";
 import PostList from "../components/PostList.vue";
 import Footer from "../components/Footer.vue";
 import PostForm from "../components/PostForm.vue";
-let gpc = localStorage.getItem("gpc");
-const token = JSON.parse(gpc).token;
 const axios = require("axios");
 
 export default {
@@ -73,6 +71,7 @@ export default {
       admin: false,
       Posts: [],
       listKey: 0,
+      token: JSON.parse(localStorage.getItem("gpc")).token,
     };
   },
   created() {
@@ -91,7 +90,7 @@ export default {
       const instance = axios.create({
         baseURL: "http://localhost:3000/api",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${this.token}`,
           "Content-Type": "multipart/form-data",
         },
       });

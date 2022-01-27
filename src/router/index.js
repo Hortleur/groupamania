@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import NotFoundComponent from '../components/NotFoundComponent.vue'
+
 
 
 const routes = [
@@ -28,9 +30,10 @@ const routes = [
     name:'Admin',
     component: () => import('../views/Admin.vue')
   },
-  {
-    path:'/:catchAll(.*)',
-    redirect: {name: 'Post'}
+  { 
+    path: '/:catchAll(.*)', 
+    component: NotFoundComponent,
+    name: 'NotFound'
   }
 ]
 

@@ -9,11 +9,8 @@
         name="postTitle"
         placeholder=" Titre"
         class="w-full rounded-2xl border-blackGroupo border-2 py-2 px-5"
-      >
-      <span
-        v-if="!title"
-        class="text-redGroupo"
-      >le titre est requis</span>
+      />
+      <span v-if="!title" class="text-redGroupo">le titre est requis</span>
     </div>
     <div class="">
       <textarea
@@ -33,22 +30,10 @@
         name="imageAltText"
         placeholder=" Description de l'image"
         class="w-full rounded-2xl border-2 border-black py-2 px-5"
-      >
-      <span
-        v-if="selectedFile"
-        class="text-redGroupo"
-      >La description est requise</span>
-      <input
-        id="image"
-        type="file"
-        name="image"
-        class="my-4"
-        @change="onFileSelected"
-      >
-      <span
-        v-if="!selectedFile"
-        class="text-redGroupo"
-      >l'image est requise</span>
+      />
+      <span v-if="selectedFile" class="text-redGroupo">La description est requise</span>
+      <input id="image" type="file" name="image" class="my-4" @change="onFileSelected" />
+      <span v-if="!selectedFile" class="text-redGroupo">l'image est requise</span>
     </div>
     <div class="my-4">
       <button
@@ -65,8 +50,6 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-let gpc = localStorage.getItem("gpc");
-const UserId = JSON.parse(gpc).id;
 
 export default {
   name: "PostForm",
@@ -75,10 +58,10 @@ export default {
       v$: useVuelidate(),
       title: "",
       content: "",
-      userId: UserId,
       imageAltText: "",
       selectedFile: null,
       isDisabled: true,
+      userId: JSON.parse(localStorage.getItem("gpc")).id,
     };
   },
   methods: {

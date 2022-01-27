@@ -2,22 +2,10 @@
   <div class="border-2 border-solid border-black bg-pink-100 p-8 rounded-xl">
     <div class="my-4">
       <label for="bio"> bio:</label>
-      <textarea
-        id="bio"
-        v-model="bio"
-        name="bio"
-        cols="30"
-        rows="5"
-        class="px-2"
-      />
+      <textarea id="bio" v-model="bio" name="bio" cols="30" rows="5" class="px-2" />
     </div>
     <div>
-      <input
-        id="image"
-        type="file"
-        name="image"
-        @change="onFileSelected"
-      >
+      <input id="image" type="file" name="image" @change="onFileSelected" />
     </div>
     <div>
       <button
@@ -32,14 +20,12 @@
 </template>
 
 <script>
-let gpc = localStorage.getItem("gpc");
-const UserId = JSON.parse(gpc).id;
 export default {
   name: "ProfileForm",
   data: function () {
     return {
       bio: "",
-      userId: UserId,
+      userId: JSON.parse("gpc").id,
       selectedFile: null,
     };
   },

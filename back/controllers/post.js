@@ -103,7 +103,7 @@ exports.onePost = async(req, res, next) => {
 }
 
 exports.deletePost = async(req, res, next) => {
-    if(req.user.payload.isAdmin === 1){    
+    if(req.user.payload.isAdmin === 1 || req.body.post.userId === req.user.payload.id){    
             const image = req.body.image
             const filename = String(image).split('/image/')[1]
             fs.unlink(`image/${filename}`, async() => {
@@ -122,7 +122,7 @@ exports.deletePost = async(req, res, next) => {
                     next(createHttpError(e.statusCode, e.message)) 
                 }
             })   
-    } else if (req.body.post.userId === req.user.payload.id) {
+    }/* else if (req.body.post.userId === req.user.payload.id) {
         const image = req.body.post.image
             const filename = String(image).split('/image/')[1]
             fs.unlink(`image/${filename}`, async() => {
@@ -140,7 +140,7 @@ exports.deletePost = async(req, res, next) => {
                 }catch (e) {
                     next(createHttpError(e.statusCode, e.message)) 
                 }
-            })   
-    }
+            })
+    }*/
     
 }
