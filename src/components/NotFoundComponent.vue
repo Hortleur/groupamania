@@ -1,30 +1,37 @@
 <template>
-  <div class="flex flex-col justify-between">
+  <div class="flex flex-col justify-between h-screen">
     <div>
-      <router-link to="/Post">
-        <Header />
+      <Header />
+    </div>
+    <div class="mx-auto">
+      <img src="../assets/travolta.gif" alt="perdu" />
+    </div>
+    <h1 class="text-5xl font-bold text-white">Page 404</h1>
+    <p class="text-3xl font-bold text-white">Tu t'es perdu mon ami ;)</p>
+    <div>
+      <router-link to="/Post" class="mr-4">
+        <button class="p-4 bg-greenGroupo font-bold text-white rounded-lg">Posts</button>
+      </router-link>
+      <router-link to="/Profile">
+        <button class="p-4 bg-greenGroupo font-bold text-white rounded-lg">
+          Profile
+        </button>
       </router-link>
     </div>
+
     <div>
-      <iframe
-        src="https://giphy.com/embed/czBIi0WnXX8L6"
-        width="100%"
-        height="100%"
-        frameBorder="0"
-        class="giphy-embed"
-        allowFullScreen
-      ></iframe>
+      <Footer />
     </div>
-    <h1>Page 404</h1>
-    <p>Tu t'es perdu mon ami ;)</p>
   </div>
 </template>
 <script>
 import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
 export default {
   name: "NotFound",
   components: {
     Header,
+    Footer,
   },
 };
 </script>
