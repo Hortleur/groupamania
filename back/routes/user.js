@@ -17,5 +17,6 @@ router.get('/user/likes', auth, user.oneUser)
 
 //delete
 router.delete('/user/delete/:id', auth, user.deleteUser)
+router.delete('/user/delete', auth, user.deleteOwn)
 
 module.exports = router;

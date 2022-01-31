@@ -94,21 +94,42 @@ exports.oneUser = async (req, res, next) => {
 }
 
 exports.deleteUser = async (req, res, next) => {
-    const id = req.params.id
-    if(req.user.payload.isAdmin === 1 || id === req.user.payload.id){
+    console.log(req.params.id, req.user.payload.id)
+    if(req.user.payload.isAdmin === 1){
         try {
             const user = await prisma.user.delete({
                 where: {
-                    id: Number(id)
+                    id: Number(req.params.id)
                 },
             })
+            console.log(res.statusCode)
             res.status(201).json({
                 status: true,
                 message: "Compte bien supprimé",
                 data: user
             })
+            
         } catch (e) {
             next(createHttpError(e.statusCode, e.message))
         }
+    }
+}
+
+exports.deleteOwn = async (req, res, next) => {
+    try {
+        const user = await prisma.user.delete({
+            where: {
+                id: Number(req.user.payload.id)
+            },
+        })
+        console.log(res.statusCode)
+        res.status(201).json({
+            status: true,
+            message: "Compte bien supprimé",
+            data: user
+        })
+        
+    } catch (e) {
+        next(createHttpError(e.statusCode, e.message))
     }
 }

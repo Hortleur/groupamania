@@ -7,7 +7,6 @@ const fs = require('fs')
 //const multer = require('../middleware/multer-config')
 
 exports.createPost = async(req, res, next) => {
-    console.log(req.body)
     try {
         const {
             title,
@@ -104,43 +103,23 @@ exports.onePost = async(req, res, next) => {
 
 exports.deletePost = async(req, res, next) => {
     if(req.user.payload.isAdmin === 1 || req.body.post.userId === req.user.payload.id){    
-            const image = req.body.image
-            const filename = String(image).split('/image/')[1]
-            fs.unlink(`image/${filename}`, async() => {
-                try {                
-                    const post = await prisma.post.delete({
-                        where: {
-                            id: Number(req.params.id)
-                        } 
-                    })
-                    res.status(200).json({
-                        status : true,
-                        message: 'Post bien supprimer',
-                        data: post
-                    })
-                }catch (e) {
-                    next(createHttpError(e.statusCode, e.message)) 
-                }
-            })   
-    }/* else if (req.body.post.userId === req.user.payload.id) {
-        const image = req.body.post.image
-            const filename = String(image).split('/image/')[1]
-            fs.unlink(`image/${filename}`, async() => {
-                try {                
-                    const post = await prisma.post.delete({
-                        where: {
-                            id: Number(req.params.id)
-                        } 
-                    })
-                    res.status(200).json({
-                        status : true,
-                        message: 'Post bien supprimer',
-                        data: post
-                    })
-                }catch (e) {
-                    next(createHttpError(e.statusCode, e.message)) 
-                }
-            })
-    }*/
-    
+        const image = req.body.image
+        const filename = String(image).split('/image/')[1]
+        fs.unlink(`image/${filename}`, async() => {
+            try {                
+                const post = await prisma.post.delete({
+                    where: {
+                        id: Number(req.params.id)
+                    } 
+                })
+                res.status(200).json({
+                    status : true,
+                    message: 'Post bien supprimer',
+                    data: post
+                })
+            }catch (e) {
+                next(createHttpError(e.statusCode, e.message)) 
+            }
+        })   
+    }   
 }

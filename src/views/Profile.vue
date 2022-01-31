@@ -16,7 +16,7 @@
     </div>
     <div>
       <div class="bg-white md:w-1/2 w-1/3 mx-auto rounded-xl p-3 sm:w-screen sm:p-4">
-        <div class="flex flex-row flex-nowrap items-center">
+        <div class="flex flex-row sm:flex-col flex-nowrap items-center">
           <div class="flex flex-col items-center">
             <div class="cursor-pointer" @click="$refs.fileInput.click()">
               <img
@@ -60,7 +60,7 @@
                   v-model="bio"
                   cols="20"
                   rows="5"
-                  class="border-2 border-gray-400 rounded-lg"
+                  class="border-2 border-gray-400 rounded-lg p-2"
                 />
                 <div v-if="v$.bio.$error">
                   {{ v$.bio.$errors[0].$message }}
@@ -180,7 +180,7 @@ export default {
     },
     //suppression du compte
     deleteAccount() {
-      const self = this;
+      let self = this;
       const instance = axios.create({
         baseURL: "http://localhost:3000/api",
         headers: {
@@ -188,7 +188,7 @@ export default {
         },
       });
       instance
-        .delete(`/user/delete/${this.userId}`)
+        .delete("/user/delete")
         .then((res) => {
           this.logOut();
           self.$router.push("/");
