@@ -12,7 +12,11 @@
             @click="goToProfile"
           />
         </router-link>
-        <button class="mx-2" @click="toggleModal = !toggleModal">
+        <button
+          aria-label="ajouter un post"
+          class="mx-2"
+          @click="toggleModal = !toggleModal"
+        >
           <i class="fas fa-plus-circle text-orangeGroupo text-3xl mx-8" />
         </button>
         <router-link v-if="admin" aria-label=" admin" to="/Admin">

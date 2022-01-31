@@ -40,6 +40,7 @@
         :disabled="!title"
         class="button border-2 border-blackGroupo rounded-full w-1/4 p-4 hover:bg-greenGroupo bg-blackGroupo text-white"
         type="submit"
+        aria-label=" poster"
         @click="onPost"
       >
         <i class="fas fa-paper-plane text-2xl" />
