@@ -10,9 +10,10 @@ npm install
 npm run serve
 ```
 ### Server
+```
 cd back
 npm start
-
+```
 ### Compiles and minifies for production
 ```
 npm run build
