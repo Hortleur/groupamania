@@ -23,13 +23,14 @@ exports.getProfile = async (req, res, next) => {
 }
 
 exports.editProfileBio = async (req, res, next) => {
+    console.log(req.body)
     try {
         const id = req.user.payload.id
         const {
             bio
         } = req.body
         const profile = await prisma.profile.update({
-            where: {id : id},
+            where: {userId : id},
             data : {
                 bio: bio
             }
@@ -46,10 +47,11 @@ exports.editProfileBio = async (req, res, next) => {
 
 exports.editProfilePic = async (req, res, next) => {
     try {
+        console.log(req.file, req.user.payload.id)
         const id = req.user.payload.id
      const image = `${req.protocol}://${req.get('host')}/image/${req.file.filename}`
     const profile = await prisma.profile.update({
-        where: {id : id},
+        where: {userId : id},
         data : {
             image,
         },
