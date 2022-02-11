@@ -139,7 +139,7 @@ export default {
       this.v$.$validate();
       if (!this.v$.$error) {
         const instance = axios.create({
-          baseURL: "http://localhost:3000/api",
+          baseURL: "https://back-livid.vercel.app/api",
           headers: {
             Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
           },
@@ -160,7 +160,7 @@ export default {
     //recuperation du profile
     getProfile() {
       const instance = axios.create({
-        baseURL: "http://localhost:3000/api",
+        baseURL: "https://back-livid.vercel.app/api",
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
         },
@@ -182,7 +182,7 @@ export default {
     deleteAccount() {
       let self = this;
       const instance = axios.create({
-        baseURL: "http://localhost:3000/api",
+        baseURL: "https://back-livid.vercel.app/api",
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
         },
@@ -205,7 +205,7 @@ export default {
     //mise à jour de la photo de profil
     updateProfilePic() {
       const instance = axios.create({
-        baseURL: "http://localhost:3000/api",
+        baseURL: "https://back-livid.vercel.app/api",
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
         },

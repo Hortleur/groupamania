@@ -92,7 +92,7 @@ export default {
 
     logChangement(event) {
       const instance = axios.create({
-        baseURL: "http://localhost:3000/api",
+        baseURL: "https://back-livid.vercel.app/api",
         headers: {
           Authorization: `Bearer ${this.token}`,
           "Content-Type": "multipart/form-data",

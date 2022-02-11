@@ -118,7 +118,7 @@ export default {
   methods: {
     getAxios() {
       const instance = axios.create({
-        baseURL: "http://localhost:3000/api",
+        baseURL: "https://back-livid.vercel.app/api",
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
         },
