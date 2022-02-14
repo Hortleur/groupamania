@@ -139,7 +139,7 @@ export default {
       this.v$.$validate();
       if (!this.v$.$error) {
         const instance = axios.create({
-          baseURL: "https://back-livid.vercel.app/api",
+          baseURL: "http://localhost:3000/api",
           headers: {
             Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
           },

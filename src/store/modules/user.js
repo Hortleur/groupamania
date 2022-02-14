@@ -1,6 +1,6 @@
 const axios = require('axios');
 const instance = axios.create({
-  baseURL: "https://back-livid.vercel.app/api",
+  baseURL: "http://localhost:3000/api",
 })
 
 export const state = {

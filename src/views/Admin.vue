@@ -106,7 +106,7 @@
 <script>
 import axios from "axios";
 const instance = axios.create({
-  baseURL: "https://back-livid.vercel.app/api",
+  baseURL: "http://localhost:3000/api",
   headers: {
     Authorization: `Bearer ${JSON.parse(localStorage.getItem("gpc")).token}`,
     "Content-Type": "application/json",
